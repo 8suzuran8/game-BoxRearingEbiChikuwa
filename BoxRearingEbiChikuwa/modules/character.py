@@ -1,0 +1,196 @@
+import pygame
+from modules.weapons.factory import WeaponsFactory
+
+class Character(pygame.sprite.Sprite):
+    def __new__(cls, image_loader, status, setting, info):
+        self = super().__new__(cls)
+
+        return self
+
+    def initializeVariable(self, image_loader, status, setting, info):
+        self.weapons_factory = WeaponsFactory()
+        self.weapons = pygame.sprite.RenderUpdates()
+
+        self.animation_type_infos = [
+            # [key, file_name],
+        ]
+        self.frames = list() # 二次元配列で複数種類を入れる。animation_type_infosの数と一致させる
+
+        # 以下はanimation_type_infosの数と一致させる
+        self.animation_index = [0] 
+        self.animation_step = [1]
+        self.animation_max = [1]
+        self.animation_interval = [0]
+        self.animation_interval_index = [0]
+
+        self.x_distance = 0
+        self.y_distance = 0
+        self.last_distance = 0
+
+        self.fall = False # 落ちるジャンプ
+        self.crush = False
+
+        return
+
+    def __init__(self, image_loader, status, setting, info):
+        pygame.sprite.Sprite.__init__(self)
+
+        self.initializeVariable(image_loader, status, setting, info)
+
+        self.image = self.frames[0][0]
+        self.rect = self.image.get_rect()
+
+        self.rect.center = (self.rect.width / 2, self.rect.height / 2)
+        self.rect.x = info[0]
+        self.rect.y = info[1]
+
+        self.weapon_interval_start = pygame.time.get_ticks()
+
+        return
+
+    def __del__(self):
+        del(self.weapons_factory)
+        del(self.weapons)
+
+        del(self.animation_type_infos)
+        del(self.frames)
+
+        del(self.animation_index)
+        del(self.animation_step)
+        del(self.animation_max)
+        del(self.animation_interval)
+        del(self.animation_interval_index)
+
+        del(self.x_distance)
+        del(self.y_distance)
+        del(self.last_distance)
+
+        del(self.fall)
+        del(self.crush)
+
+        return
+
+    def update(self, image_loader, status, setting, foregrounds, info):
+        self.move(image_loader, status, setting, foregrounds, True)
+
+        return
+
+    def animation(self):
+        return
+
+    def moveAnimation(self, step):
+        if step != 0:
+            step = int(step / abs(step))
+
+        if self.animation_interval_index[0] < self.animation_interval[0]:
+            return
+
+        self.animation_index[0] += step
+
+        if step > 0 and self.animation_index[0] > self.animation_max[0]:
+            self.animation_index[0] = 0
+
+        elif step < 0 and self.animation_index[0] <= 0:
+            self.animation_index[0] = self.animation_max[0]
+
+        if self.__class__.__name__ != 'CharacterEbichikuwa':
+            if self.last_distance > 0:
+                self.image = pygame.transform.flip(self.frames[0][self.animation_index[0]], True, False)
+            else:
+                self.image = self.frames[0][self.animation_index[0]]
+        else:
+            if self.animation_index[0] > self.animation_file_max[0]:
+                self.image = pygame.transform.flip(self.frames[0][self.animation_file_max[0] - (self.animation_index[0] - self.animation_file_max[0])], True, False)
+            else:
+                self.image = self.frames[0][self.animation_index[0]]
+
+        return
+
+    def hookHitWall(self, kind):
+        pass
+
+    def jumpStart(self, image_loader, status, setting, key):
+        self.fall = True
+        self.y_distance = -100
+
+        if self.animation_index[1] >= 8:
+            self.animation_index[1] = 8
+
+        # しゃがむアニメーションをリセット
+        self.animation_index[1] = 0
+        self.animation_interval_index[1] = 0
+        self.moveAnimation(0)
+
+        return
+
+    def jumpMove(self, foregrounds):
+        g = 9.8
+
+        self.y_distance += g
+        
+        if (self.__class__.__name__ == 'CharacterEbichikuwa' and self.combo_jump == True) and self.y_distance > -20:
+            self.y_distance = 0
+            self.combo_jump = False
+
+        self.rect.y += self.y_distance / 4
+
+        for foreground in foregrounds:
+            if (self.fall == True or (self.__class__.__name__ == 'CharacterEbichikuwa' and self.combo_jump == True)) and self.rect.right > foreground.rect.left and self.rect.left < foreground.rect.right:
+                # 着地
+                if self.y_distance >= 0 and self.rect.top < foreground.rect.top and self.rect.bottom > foreground.rect.top:
+                    found_ground = True
+                    self.fall = False
+                    self.rect.y = self.rect.y - (self.rect.bottom - foreground.rect.top)
+                    self.y_distance = 0
+
+                # 頭打ち
+                if self.y_distance <= 0 and foreground.rect.top < self.rect.top and foreground.rect.bottom > self.rect.top:
+                    self.rect.y = foreground.rect.bottom + 1
+                    self.y_distance = 0
+
+        return
+
+    def moveStep(self):
+        pass
+
+    # 横移動のみ
+    def move(self, image_loader, status, setting, foregrounds, need_fall = True):
+        self.animation_interval_index[0] += 1
+
+        self.moveStep()
+
+        found_ground = False
+        for foreground in foregrounds:
+            # 横へ移動中に衝突
+            if self.rect.top < foreground.rect.bottom and self.rect.bottom > foreground.rect.top:
+                if self.x_distance > 0:
+                    if self.rect.right + 1 >= foreground.rect.left and self.rect.right + 1 <= foreground.rect.right:
+                        self.hookHitWall(type(foreground).__name__)
+                elif self.x_distance < 0:
+                    if self.rect.left - 1 <= foreground.rect.right and self.rect.left - 1 >= foreground.rect.left:
+                        self.hookHitWall(type(foreground).__name__)
+
+            # 落下の為の着地確認
+            if need_fall:
+                if self.rect.top < foreground.rect.top and self.rect.bottom >= foreground.rect.top and self.rect.right > foreground.rect.left and self.rect.left < foreground.rect.right:
+                    found_ground = True
+
+        # 段ボールの壁に衝突
+        if (self.x_distance < 0 and self.rect.left <= setting['window']['margin_left']) or (self.x_distance > 0 and self.rect.right >= setting['window']['full_width'] - setting['window']['margin_right']):
+            self.hookHitWall('DanballWall')
+
+        # 落下
+        if need_fall:
+            if found_ground == False:
+                self.fall = True
+
+        if self.animation_interval_index[0] >= self.animation_interval[0]:
+            self.moveAnimation(self.x_distance)
+            self.animation_interval_index[0] = 0
+
+        self.rect.x += self.x_distance
+
+        if self.x_distance != 0:
+            self.last_distance = self.x_distance
+
+        return
