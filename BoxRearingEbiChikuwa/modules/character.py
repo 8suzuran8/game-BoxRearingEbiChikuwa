@@ -20,8 +20,10 @@ class Character(pygame.sprite.Sprite):
         self.animation_index = [0] 
         self.animation_step = [1]
         self.animation_max = [1]
-        self.animation_interval = [0]
-        self.animation_interval_index = [0]
+        self.animation_file_max = [1]
+        self.animation_interval = [1]
+        self.animation_interval_index = [1]
+        self.animation_interval_step = [1]
 
         self.x_distance = 0
         self.y_distance = 0
@@ -75,36 +77,45 @@ class Character(pygame.sprite.Sprite):
 
         return
 
-    def animation(self):
-        return
+    def addAnimation(self, step, kind = 0):
+        return None
 
-    def moveAnimation(self, step):
+    def animation(self, step, kind = 0):
+        if self.animation_interval_index[kind] == 0:
+            for i in range(len(self.animation_type_infos)):
+                if i == kind:
+                    continue
+
+            self.animation_index[i] = 0
+            self.animation_interval_index[i] = 0
+
+        self.animation_interval_index[kind] += self.animation_interval_step[kind]
+        if self.animation_interval_index[kind] % self.animation_interval[kind] != 0:
+            return True
+
         if step != 0:
             step = int(step / abs(step))
 
-        if self.animation_interval_index[0] < self.animation_interval[0]:
-            return
+        step *= self.animation_step[kind]
 
-        self.animation_index[0] += step
+        self.animation_index[kind] += step
 
-        if step > 0 and self.animation_index[0] > self.animation_max[0]:
-            self.animation_index[0] = 0
+        if step > 0 and self.animation_index[kind] > self.animation_max[kind]:
+            self.animation_index[kind] = 0
 
-        elif step < 0 and self.animation_index[0] <= 0:
-            self.animation_index[0] = self.animation_max[0]
+        elif step < 0 and self.animation_index[kind] <= 0:
+            self.animation_index[kind] = self.animation_max[kind]
 
-        if self.__class__.__name__ != 'CharacterEbichikuwa':
-            if self.last_distance > 0:
-                self.image = pygame.transform.flip(self.frames[0][self.animation_index[0]], True, False)
-            else:
-                self.image = self.frames[0][self.animation_index[0]]
+        add_animation_result = self.addAnimation(step, kind)
+        if add_animation_result != None:
+            return add_animation_result
+
+        if self.last_distance > 0:
+            self.image = pygame.transform.flip(self.frames[kind][self.animation_index[kind]], True, False)
         else:
-            if self.animation_index[0] > self.animation_file_max[0]:
-                self.image = pygame.transform.flip(self.frames[0][self.animation_file_max[0] - (self.animation_index[0] - self.animation_file_max[0])], True, False)
-            else:
-                self.image = self.frames[0][self.animation_index[0]]
+            self.image = self.frames[kind][self.animation_index[kind]]
 
-        return
+        return True
 
     def hookHitWall(self, kind):
         pass
@@ -119,7 +130,7 @@ class Character(pygame.sprite.Sprite):
         # しゃがむアニメーションをリセット
         self.animation_index[1] = 0
         self.animation_interval_index[1] = 0
-        self.moveAnimation(0)
+        self.animation(0)
 
         return
 
@@ -185,7 +196,7 @@ class Character(pygame.sprite.Sprite):
                 self.fall = True
 
         if self.animation_interval_index[0] >= self.animation_interval[0]:
-            self.moveAnimation(self.x_distance)
+            self.animation(self.x_distance)
             self.animation_interval_index[0] = 0
 
         self.rect.x += self.x_distance

@@ -251,7 +251,9 @@ class StagesPlay:
         self.sprites[self.sprite_indexes['main_character']]['sprite'].comboAction(image_loader, status, setting)
 
         for speed_animation in self.speed_animations.sprites():
-            speed_animation.animation()
+            if type(speed_animation).__name__.startswith('Items'):
+                # Characterはmoveに合わせてアニメーションさせるため。
+                speed_animation.animation()
 
         return
 
@@ -292,7 +294,7 @@ class StagesPlay:
             rect_list = []
 
             if self.sprites[self.sprite_indexes['main_character']]['sprite'].crush == True:
-                crush_animation_result = self.sprites[self.sprite_indexes['main_character']]['sprite'].crushAnimation()
+                crush_animation_result = self.sprites[self.sprite_indexes['main_character']]['sprite'].animation(+1, 2)
                 if type(crush_animation_result).__name__ == 'int':
                     return crush_animation_result
 
@@ -341,7 +343,7 @@ class StagesPlay:
                             self.sprites[self.sprite_indexes['main_character']]['sprite'].move(image_loader, status, setting, self.foregrounds)
                     elif event.key == pygame.K_SPACE:
                         if self.sprites[self.sprite_indexes['main_character']]['sprite'].fall == False:
-                            self.sprites[self.sprite_indexes['main_character']]['sprite'].squatAnimation()
+                            self.sprites[self.sprite_indexes['main_character']]['sprite'].animation(+1, 1)
 
                     if self.sprites[self.sprite_indexes['main_character']]['sprite'].rect.colliderect(self.sprites[self.sprite_indexes['npc']]['sprite'].rect):
                         self.sprites[self.sprite_indexes['npc']]['sprite'].clear = True

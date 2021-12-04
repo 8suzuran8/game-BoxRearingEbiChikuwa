@@ -55,19 +55,19 @@ class CharacterEbichikuwa(Character):
 
         self.animation_interval = [
             1,
-            10,
-            10,
+            5,
+            50,
         ]
 
         self.animation_interval_index = [
-            0,
-            0,
-            0,
+            1,
+            1,
+            1,
         ]
 
         self.animation_interval_step = [
             1,
-            10,
+            1,
             1,
         ]
 
@@ -180,49 +180,28 @@ class CharacterEbichikuwa(Character):
 
         return pygame.mixer.Sound(wave.astype(np.float32))
 
-    def squatAnimation(self):
-        if self.animation_interval_index[1] == 0:
-
-            # 歩くアニメーションをリセット
-            self.animation_index[0] = 0
-            self.moveAnimation(self.animation_index[0])
-
-        if self.animation_interval_index[1] % self.animation_interval_step[1] == 0:
-            if self.animation_index[1] < self.animation_max[1]:
-                self.animation_index[1] += 1
-                if self.animation_index[1] > self.animation_max[1]:
-                    self.animation_index[1] = 0
-
-                self.image = self.frames[1][self.animation_index[1]]
-                self.animation_index[1] += 1
-
+    def addAnimation(self, step, kind = 0):
+        if kind == 1:
+            # しゃがむアニメーションの限界
             if self.animation_index[1] >= self.animation_max[1]:
                 self.crush = True
+                return True
 
-        self.animation_interval_index[1] += 1
+        if kind == 2:
+            # クラッシュアニメーションの終了
+            if self.animation_index[kind] >= self.animation_max[kind]:
+                return -2
 
-        return
+        if kind == 0:
+            # 左右無し　且つ　アニメーションの半分を左右反転で対応
+            if self.animation_index[kind] > self.animation_file_max[kind]:
+                self.image = pygame.transform.flip(self.frames[kind][self.animation_file_max[kind] - (self.animation_index[kind] - self.animation_file_max[kind])], True, False)
+            else:
+                self.image = self.frames[kind][self.animation_index[kind]]
 
-    def crushAnimation(self):
-        if self.animation_interval_index[2] == 0:
-            # squatアニメーションをリセット
-            self.animation_index[2] = 0
+            return True
 
-            # 潰れるアニメーションを初期化
-            self.crush = True
-
-        if self.animation_index[2] >= self.animation_max[2]:
-            return -2
-
-        if self.animation_index[2] < self.animation_max[2] and self.animation_interval_index[2] % self.animation_interval_step[2] == 0:
-            self.animation_index[2] += 1
-
-            self.image = self.frames[2][self.animation_index[2]]
-            self.animation_index[2] += 1
-
-        self.animation_interval_index[2] += 1
-
-        return True
+        return None
 
     def moveStep(self):
         if self.y_distance != 0:
@@ -358,7 +337,7 @@ class CharacterEbichikuwa(Character):
     def comboAction(self, image_loader, status, setting):
         if self.combo_index > 3:
             self.animation_interval_index[0] += 1
-            self.moveAnimation(+1)
+            self.animation(+1, 0)
         if self.combo_index > 7:
             self.attack(image_loader, status, setting)
             if self.combo_start == 0:
