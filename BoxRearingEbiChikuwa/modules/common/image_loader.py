@@ -76,5 +76,10 @@ class ImageLoader(Singleton):
         for i in range(1):
             self.images['items/message' + str(i).zfill(2) + '.svg'] = pygame.image.load(base_path + 'items/message' + str(i).zfill(2) + '.svg').convert_alpha()
 
+        self.images['items/arrow_up.svg'] = pygame.image.load(base_path + 'items/arrow_up.svg').convert_alpha()
+        self.images['items/arrow_right.svg'] = pygame.image.load(base_path + 'items/arrow_right.svg').convert_alpha()
+        self.images['items/arrow_down.svg'] = pygame.image.load(base_path + 'items/arrow_down.svg').convert_alpha()
+        self.images['items/arrow_left.svg'] = pygame.image.load(base_path + 'items/arrow_left.svg').convert_alpha()
+
     def get(self, path):
         return self.images[path]

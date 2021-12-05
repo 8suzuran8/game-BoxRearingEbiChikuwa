@@ -89,38 +89,4 @@
        style="fill:none;fill-rule:evenodd;stroke:#009900;stroke-width:0.529167;stroke-linecap:round;stroke-linejoin:round;stroke-miterlimit:4;stroke-dasharray:none;stroke-dashoffset:1.8;stroke-opacity:1"
        d="M 10.201979,11.576049 A 3.587396,1.1041246 0 0 1 6.6145833,12.680174 3.587396,1.1041246 0 0 1 3.0271876,11.576049 3.587396,1.1041246 0 0 1 6.6145833,10.471925 3.587396,1.1041246 0 0 1 10.201979,11.576049 Z" />
   </g>
-  <g
-     aria-label="➡︎⬅︎➡︎⬅︎➡︎➡︎➡︎ "
-     id="text1506"
-     style="font-weight:600;font-size:17.9991px;line-height:1.25;font-family:'Hiragino Kaku Gothic Pro';-inkscape-font-specification:'Hiragino Kaku Gothic Pro, Semi-Bold';stroke-width:0.187492"
-     transform="translate(0,8.999565)">
-    <path
-       d="m 246.03153,91.601478 v 5.147742 h 9.39553 v 4.0318 l 6.73166,-6.605671 -6.73166,-6.605669 v 4.031798 z"
-       style="font-size:17.9991px;stroke-width:0.187492"
-       id="path908" />
-    <path
-       d="M 279.94183,96.74922 V 91.601478 H 270.5283 V 87.56968 l -6.73166,6.605669 6.73166,6.605671 v -4.0318 z"
-       style="font-size:17.9991px;stroke-width:0.187492"
-       id="path910" />
-    <path
-       d="m 282.02973,91.601478 v 5.147742 h 9.39553 v 4.0318 l 6.73166,-6.605671 -6.73166,-6.605669 v 4.031798 z"
-       style="font-size:17.9991px;stroke-width:0.187492"
-       id="path912" />
-    <path
-       d="M 315.94003,96.74922 V 91.601478 H 306.5265 V 87.56968 l -6.73166,6.605669 6.73166,6.605671 v -4.0318 z"
-       style="font-size:17.9991px;stroke-width:0.187492"
-       id="path914" />
-    <path
-       d="m 318.02793,91.601478 v 5.147742 h 9.39553 v 4.0318 l 6.73166,-6.605671 -6.73166,-6.605669 v 4.031798 z"
-       style="font-size:17.9991px;stroke-width:0.187492"
-       id="path916" />
-    <path
-       d="m 336.02703,91.601478 v 5.147742 h 9.39553 v 4.0318 l 6.73166,-6.605671 -6.73166,-6.605669 v 4.031798 z"
-       style="font-size:17.9991px;stroke-width:0.187492"
-       id="path918" />
-    <path
-       d="m 354.02613,91.601478 v 5.147742 h 9.39553 v 4.0318 l 6.73166,-6.605671 -6.73166,-6.605669 v 4.031798 z"
-       style="font-size:17.9991px;stroke-width:0.187492"
-       id="path920" />
-  </g>
 </svg>

@@ -91,10 +91,10 @@ class StagesPlay:
         # 吹き出し
         message_position = [
             self.npc_position[0] + setting['window']['block_size'],
-            self.npc_position[1]
+            self.npc_position[1],
         ]
         self.sprites.append({
-            'sprite': self.item_factory.create(image_loader, status, setting, 'items_simple', 'items/message00.svg', message_position),
+            'sprite': self.item_factory.create(image_loader, status, setting, 'items_message', '', message_position),
             'key': 'message',
         })
         self.sprite_indexes['message'] = len(self.sprites) - 1
