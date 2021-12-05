@@ -5,9 +5,7 @@ from modules.items.cardboard_close import ItemsCardboardClose
 from modules.items.cardboard_open import ItemsCardboardOpen
 from modules.items.items import ItemsSimple
 from modules.items.stopwatch import ItemsStopwatch
-from modules.items.rhythm_combo.drum import ItemsRhythmComboDrum
-from modules.items.rhythm_combo.rhythm01 import ItemsRhythmComboRhythm01
-from modules.items.rhythm_combo.aim import ItemsRhythmComboAim
+from modules.items.rhythm_combos.rhythm01 import ItemsRhythmCombosRhythm01
 from modules.items.bee_house import ItemsBeeHouse
 from modules.items.time_travel_zone import ItemsTimeTravelZone
 from modules.items.transparent_block import ItemsTransparentBlock # 地面

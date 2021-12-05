@@ -72,26 +72,11 @@ class StagesPlay:
         x = 200
         y = 0
         self.sprites.append({
-            'sprite': self.item_factory.create(image_loader, status, setting, 'items_rhythm_combo_drum', 'items/rhythm_combo/drum.svg', [x, y]),
-            'key': 'rhythm_combo_drum',
+            'sprite': self.item_factory.create(image_loader, status, setting, 'items_rhythm_combos_rhythm01', '', [x, y]),
+            'key': 'rhythm_combo',
         })
         self.sprite_indexes['rhythm_combo_drum'] = len(self.sprites) - 1
         self.speed_animations.add(self.sprites[self.sprite_indexes['rhythm_combo_drum']]['sprite'])
-
-        self.sprites.append({
-            'sprite': self.item_factory.create(image_loader, status, setting, 'items_rhythm_combo_rhythm01', '', [x, y]),
-            'key': 'rhythm_combo_rhythm',
-        })
-        self.sprite_indexes['rhythm_combo_rhythm'] = len(self.sprites) - 1
-        self.speed_animations.add(self.sprites[self.sprite_indexes['rhythm_combo_rhythm']]['sprite'])
-
-        x = 285
-        y = 40
-        self.sprites.append({
-            'sprite': self.item_factory.create(image_loader, status, setting, 'items_rhythm_combo_aim', '', [x, y]),
-            'key': 'rhythm_combo_aim',
-        })
-        self.sprite_indexes['rhythm_combo_aim'] = len(self.sprites) - 1
 
         # 浮遊ブロック
         for floating_block_info in self.floating_block_infos:
@@ -319,7 +304,7 @@ class StagesPlay:
                     self.timeEventAction3000(image_loader, status, setting, timeevent_count)
 
                 elif event.type == pygame.KEYDOWN:
-                    self.sprites[self.sprite_indexes['main_character']]['sprite'].comboInput(event.key, self.sprites[self.sprite_indexes['rhythm_combo_aim']]['sprite'], self.sprites[self.sprite_indexes['rhythm_combo_rhythm']]['sprite'])
+                    self.sprites[self.sprite_indexes['main_character']]['sprite'].comboInput(event.key, self.sprites[self.sprite_indexes['rhythm_combo_drum']]['sprite'].aim, self.sprites[self.sprite_indexes['rhythm_combo_drum']]['sprite'])
 
                     if event.key == pygame.K_ESCAPE:
                         pygame.quit()
@@ -351,13 +336,13 @@ class StagesPlay:
                 elif event.type == pygame.KEYUP:
                     self.sprites[self.sprite_indexes['main_character']]['sprite'].jumpStart(image_loader, status, setting, event.key)
 
-            self.sprites[self.sprite_indexes['rhythm_combo_aim']]['sprite'].callAnimation(rhythm_combo_aim_action)
+            self.sprites[self.sprite_indexes['rhythm_combo_drum']]['sprite'].aim.callAnimation(rhythm_combo_aim_action)
             rhythm_combo_aim_action = False
 
             pygame.display.get_surface().blit(self.sprites[self.sprite_indexes['npc']]['sprite'].image, self.sprites[self.sprite_indexes['npc']]['sprite'].rect)
             if self.sprites[self.sprite_indexes['npc']]['sprite'].clear == True:
                 surface.blit(self.sprites[self.sprite_indexes['message']]['sprite'].image, self.sprites[self.sprite_indexes['message']]['sprite'].rect)
-            surface.blit(self.sprites[self.sprite_indexes['rhythm_combo_aim']]['sprite'].image, self.sprites[self.sprite_indexes['rhythm_combo_aim']]['sprite'].rect)
+            surface.blit(self.sprites[self.sprite_indexes['rhythm_combo_drum']]['sprite'].aim.image, self.sprites[self.sprite_indexes['rhythm_combo_drum']]['sprite'].aim.rect)
             surface.blit(self.sprites[self.sprite_indexes['main_character']]['sprite'].image, self.sprites[self.sprite_indexes['main_character']]['sprite'].rect)
 
             rect_list += self.sprites[self.sprite_indexes['main_character']]['sprite'].weapons.draw(surface)
@@ -365,7 +350,7 @@ class StagesPlay:
             rect_list += self.speed_animations.draw(surface)
             rect_list += [self.sprites[self.sprite_indexes['npc']]['sprite'].rect]
             rect_list += [self.sprites[self.sprite_indexes['message']]['sprite'].rect]
-            rect_list += [self.sprites[self.sprite_indexes['rhythm_combo_aim']]['sprite'].rect]
+            rect_list += [self.sprites[self.sprite_indexes['rhythm_combo_drum']]['sprite'].aim.rect]
             rect_list += [self.sprites[self.sprite_indexes['main_character']]['sprite'].rect]
 
             if len(rect_list) > 0:

@@ -1,7 +1,7 @@
 import pygame
-from modules.items.rhythm_combo.rhythm import ItemsRhythmComboRhythm
+from modules.items.rhythm_combo import ItemsRhythmCombo
 
-class ItemsRhythmComboRhythm01(ItemsRhythmComboRhythm):
+class ItemsRhythmCombosRhythm01(ItemsRhythmCombo):
     def __new__(cls, image_loader, status, setting, path, info):
         self = super().__new__(cls, image_loader, status, setting, path, info)
 
@@ -47,7 +47,7 @@ class ItemsRhythmComboRhythm01(ItemsRhythmComboRhythm):
             [False, False],
         ]
 
-        ItemsRhythmComboRhythm.initializeVariable(self, image_loader, status, setting, path, info)
+        ItemsRhythmCombo.initializeVariable(self, image_loader, status, setting, path, info)
 
         return
 
