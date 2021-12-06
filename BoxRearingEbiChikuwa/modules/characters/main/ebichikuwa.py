@@ -291,7 +291,7 @@ class CharacterEbichikuwa(Character):
 
         return
 
-    def comboInput(self, key, drum_aim, drum_rhythm):
+    def comboInput(self, key, drum_rhythm):
         if self.animation_index[1] > 0:
             return
 

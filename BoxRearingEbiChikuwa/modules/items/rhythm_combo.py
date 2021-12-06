@@ -2,104 +2,6 @@ import math
 import pygame
 from modules.item import Item
 
-class ItemsRhythmComboAim(Item):
-    def __new__(cls, image_loader, status, setting, path, info):
-        self = super().__new__(cls, image_loader, status, setting, path, info)
-
-        return self
-
-    def initializeVariable(self, image_loader, status, setting, path, info):
-        Item.initializeVariable(self, image_loader, status, setting, path, info)
-
-        self.size = 20
-        self.color_type = 0
-        self.animation_max = 2
-
-        for i in range(self.animation_max):
-            self.surface_infos.append(pygame.Surface((self.size, self.size)).convert_alpha())
-
-        self.draw((0, 0, 0), self.surface_infos[0])
-        self.draw((255, 165, 0), self.surface_infos[1])
-
-        return
-
-    def __del__(self):
-        super().__del__()
-
-        del(self.size)
-        del(self.color_type)
-
-        return
-
-    def draw(self, color, surface):
-        # 円
-        pygame.draw.circle(
-            surface,
-            color,
-            (self.size / 2, self.size / 2),
-            self.size / 2,
-            2
-        )
-
-        # 十字
-        pygame.draw.line(
-            surface,
-            color,
-            (self.size / 2 - 1, 0),
-            (self.size / 2 - 1, self.size / 2 - 2),
-            2
-        )
-
-        pygame.draw.line(
-            surface,
-            color,
-            (self.size / 2 - 1, self.size / 2 + 2),
-            (self.size / 2 - 1, self.size),
-            2
-        )
-
-        pygame.draw.line(
-            surface,
-            color,
-            (0, self.size / 2 - 1),
-            (self.size / 2 - 2, self.size / 2 - 1),
-            2
-        )
-
-        pygame.draw.line(
-            surface,
-            color,
-            (self.size / 2 + 2, self.size / 2 - 1),
-            (self.size, self.size / 2 - 1),
-            2
-        )
-
-        return
-
-    def callAnimation(self, drum_aim_action):
-        if self.color_type == 0 and drum_aim_action == True:
-            self.color_type = 1
-            self.originAnimation()
-        elif self.color_type == 1:
-            self.color_type = 0
-            self.originAnimation()
-
-        return
-
-    def originAnimation(self):
-        self.animation_index += 1
-        if self.animation_index < 0:
-            self.animation_index = self.animation_max - 1
-        elif self.animation_index >= self.animation_max:
-            self.animation_index = 0
-
-        self.image = self.frames[self.animation_index]
-
-        return
-
-    def animation(self):
-        return
-
 class ItemsRhythmCombo(Item):
     def __new__(cls, image_loader, status, setting, path, info):
         self = super().__new__(cls, image_loader, status, setting, path, info)
@@ -126,15 +28,14 @@ class ItemsRhythmCombo(Item):
             if angle >= 180:
                 angle -= 180
 
-            self.surface_infos.append(pygame.Surface((100, 100)).convert_alpha())
+            self.surface_infos.append(pygame.Surface((105, 100)).convert_alpha())
             surface_infos_index = len(self.surface_infos) - 1
-            self.draw(360 - angle * 2, make_target, self.surface_infos[surface_infos_index])
+            self.drawRhythm(360 - angle * 2, make_target, self.surface_infos[surface_infos_index])
 
+            self.drawAim(self.surface_infos[surface_infos_index], [105, 60])
             self.surface_infos[surface_infos_index].blit(image_loader.get('items/rhythm_combo/drum.svg'.replace('.svg', str(i).zfill(3) + '.svg')), [0, 0])
 
             make_target = False
-
-        self.aim = ItemsRhythmComboAim(image_loader, status, setting, path, [info[0] + 85, info[1] + 40])
 
         return
 
@@ -145,7 +46,7 @@ class ItemsRhythmCombo(Item):
 
         return
 
-    def draw(self, rotate, make_target, surface):
+    def drawRhythm(self, rotate, make_target, surface):
         if rotate < 0:
             rotate = 360
         elif rotate > 360:
@@ -176,3 +77,52 @@ class ItemsRhythmCombo(Item):
                 5,
                 0
             )
+
+    def drawAim(self, surface, position):
+        size = 20
+        color = (0, 0, 0)
+
+        # 円
+        pygame.draw.circle(
+            surface,
+            color,
+            (position[0] - size / 2, position[1] - size / 2),
+            size / 2,
+            2
+        )
+
+        # 十字
+        pygame.draw.line(
+            surface,
+            color,
+            (position[0] - size / 2 - 1, position[1] - 0),
+            (position[0] - size / 2 - 1, position[1] - size / 2 - 2),
+            2
+        )
+
+        pygame.draw.line(
+            surface,
+            color,
+            (position[0] - size / 2 - 1, position[1] - size / 2 + 2),
+            (position[0] - size / 2 - 1, position[1] - size),
+            2
+        )
+
+        pygame.draw.line(
+            surface,
+            color,
+            (position[0] - 0, position[1] - size / 2 - 1),
+            (position[0] - size / 2 - 2, position[1] - size / 2 - 1),
+            2
+        )
+
+        pygame.draw.line(
+            surface,
+            color,
+            (position[0] - size / 2 + 2, position[1] - size / 2 - 1),
+            (position[0] - size, position[1] - size / 2 - 1),
+            2
+        )
+
+        return
+    
