@@ -48,16 +48,6 @@ class StagesPlay:
         #         y = i * 50 + setting['window']['margin_top']
         #         self.sprites[self.sprite_indexes['background']]['sprite'].image.blit(image_loader.get('items/smoke.svg'), [x, y])
 
-        # 蜂の巣
-        x = setting['window']['full_width'] / 2 - 50
-        y = setting['window']['margin_top'] + 30
-        self.sprites.append({
-            'sprite': self.item_factory.create(image_loader, status, setting, 'items_bee_house', 'items/bee_house.svg', [x, y]),
-            'key': 'bee_house',
-        })
-        self.sprite_indexes['bee_house'] = len(self.sprites) - 1
-        self.speed_animations.add(self.sprites[self.sprite_indexes['bee_house']]['sprite'])
-
         # 時間枠
         x = setting['window']['margin_left'] + setting['window']['moving_width'] / 2 - 28
         y = 0
@@ -67,16 +57,6 @@ class StagesPlay:
         })
         self.sprite_indexes['stopwatch'] = len(self.sprites) - 1
         self.stopwatch = self.sprites[self.sprite_indexes['stopwatch']]['sprite']
-
-        # 和太鼓
-        x = 200
-        y = 0
-        self.sprites.append({
-            'sprite': self.item_factory.create(image_loader, status, setting, 'items_rhythm_combos_rhythm01', '', [x, y]),
-            'key': 'rhythm_combo',
-        })
-        self.sprite_indexes['rhythm_combo_drum'] = len(self.sprites) - 1
-        self.speed_animations.add(self.sprites[self.sprite_indexes['rhythm_combo_drum']]['sprite'])
 
         # 浮遊ブロック
         for floating_block_info in self.floating_block_infos:
@@ -88,6 +68,25 @@ class StagesPlay:
             self.foregrounds.add(self.sprites[floating_block_index]['sprite'])
             self.sprites[self.sprite_indexes['background']]['sprite'].image.blit(image_loader.get('items/floating_box_' + floating_block_info[2] + '.svg'), [self.sprites[floating_block_index]['sprite'].rect.x, self.sprites[floating_block_index]['sprite'].rect.y - 10])
 
+        # 蜂の巣
+        x = setting['window']['full_width'] / 2 - 50
+        y = setting['window']['margin_top'] + 30
+        self.sprites.append({
+            'sprite': self.item_factory.create(image_loader, status, setting, 'items_bee_house', 'items/bee_house.svg', [x, y]),
+            'key': 'bee_house',
+        })
+        self.sprite_indexes['bee_house'] = len(self.sprites) - 1
+        self.speed_animations.add(self.sprites[self.sprite_indexes['bee_house']]['sprite'])
+
+        # 和太鼓
+        x = 200
+        y = 0
+        self.sprites.append({
+            'sprite': self.item_factory.create(image_loader, status, setting, 'items_rhythm_combos_rhythm01', '', [x, y]),
+            'key': 'rhythm_combo',
+        })
+        self.sprite_indexes['rhythm_combo_drum'] = len(self.sprites) - 1
+        self.speed_animations.add(self.sprites[self.sprite_indexes['rhythm_combo_drum']]['sprite'])
         # 吹き出し
         message_position = [
             self.npc_position[0] + setting['window']['block_size'],
@@ -98,6 +97,28 @@ class StagesPlay:
             'key': 'message',
         })
         self.sprite_indexes['message'] = len(self.sprites) - 1
+
+        # 天井
+        x = setting['window']['margin_left']
+        y = setting['window']['margin_top'] - setting['window']['block_size']
+        self.sprites.append({
+            'sprite': self.item_factory.create(image_loader, status, setting, 'items_transparent_block', '', [x, y]),
+            'key': 'topground',
+        })
+        self.sprite_indexes['topground'] = len(self.sprites) - 1
+        self.foregrounds.add(self.sprites[self.sprite_indexes['topground']]['sprite'])
+
+        # 底辺の地面
+        x = setting['window']['margin_left']
+        y = setting['window']['margin_top'] + setting['window']['moving_height']
+        self.sprites.append({
+            'sprite': self.item_factory.create(image_loader, status, setting, 'items_transparent_block', '', [x, y]),
+            'key': 'bottomground',
+        })
+        self.sprite_indexes['bottomground'] = len(self.sprites) - 1
+        self.foregrounds.add(self.sprites[self.sprite_indexes['bottomground']]['sprite'])
+
+        self.background_image = self.sprites[self.sprite_indexes['background']]['sprite'].image.copy()
 
         # タイムトラベルゾーン
         self.sprites.append({
@@ -121,26 +142,6 @@ class StagesPlay:
             'key': 'main_character',
         })
         self.sprite_indexes['main_character'] = len(self.sprites) - 1
-
-        # 天井
-        x = setting['window']['margin_left']
-        y = setting['window']['margin_top'] - setting['window']['block_size']
-        self.sprites.append({
-            'sprite': self.item_factory.create(image_loader, status, setting, 'items_transparent_block', '', [x, y]),
-            'key': 'topground',
-        })
-        self.sprite_indexes['topground'] = len(self.sprites) - 1
-        self.foregrounds.add(self.sprites[self.sprite_indexes['topground']]['sprite'])
-
-        # 底辺の地面
-        x = setting['window']['margin_left']
-        y = setting['window']['margin_top'] + setting['window']['moving_height']
-        self.sprites.append({
-            'sprite': self.item_factory.create(image_loader, status, setting, 'items_transparent_block', '', [x, y]),
-            'key': 'bottomground',
-        })
-        self.sprite_indexes['bottomground'] = len(self.sprites) - 1
-        self.foregrounds.add(self.sprites[self.sprite_indexes['bottomground']]['sprite'])
 
         # 敵キャラ
         for enemy_info in self.enemy_infos:
@@ -221,6 +222,8 @@ class StagesPlay:
         # 飛ぶ
         for jump_target in pygame.sprite.RenderUpdates(self.characters, self.sprites[self.sprite_indexes['main_character']]['sprite'], self.sprites[self.sprite_indexes['main_character']]['sprite'].weapons):
             if jump_target.fall or (jump_target.__class__.__name__ == 'CharacterEbichikuwa' and jump_target.combo_jump):
+                self.sprites[self.sprite_indexes['main_character']]['sprite'].clear(self.background_image)
+                pygame.display.update(self.sprites[self.sprite_indexes['main_character']]['sprite'].rect)
                 jump_target.jumpMove(self.foregrounds)
 
             if jump_target.__class__.__name__ == 'WeaponsGun' and jump_target.dead:
@@ -283,17 +286,18 @@ class StagesPlay:
                 if type(crush_animation_result).__name__ == 'int':
                     return crush_animation_result
 
+                self.sprites[self.sprite_indexes['main_character']]['sprite'].clear(self.background_image)
                 surface.blit(self.sprites[self.sprite_indexes['main_character']]['sprite'].image, self.sprites[self.sprite_indexes['main_character']]['sprite'].rect)
                 pygame.display.update(self.sprites[self.sprite_indexes['main_character']]['sprite'].rect)
 
                 continue
 
-
-            surface.blit(self.sprites[self.sprite_indexes['background']]['sprite'].image, self.sprites[self.sprite_indexes['main_character']]['sprite'].rect, self.sprites[self.sprite_indexes['main_character']]['sprite'].rect)
-            self.animations.clear(surface, self.sprites[self.sprite_indexes['background']]['sprite'].image)
-            self.speed_animations.clear(surface, self.sprites[self.sprite_indexes['background']]['sprite'].image)
-
             pygame.time.wait(30)
+
+            self.sprites[self.sprite_indexes['main_character']]['sprite'].clear(self.background_image)
+            self.animations.clear(surface, self.background_image)
+            self.speed_animations.clear(surface, self.background_image)
+
             for event in pygame.event.get():
                 if event.type == self.PYGAME_EVENTTYPE_TIMEREVENT: # 50 ms
                     timeevent_count += 1
@@ -336,8 +340,9 @@ class StagesPlay:
                         if self.sprites[self.sprite_indexes['main_character']]['sprite'].animation_index[1] == 0:
                             self.sprites[self.sprite_indexes['main_character']]['sprite'].attack(image_loader, status, setting)
 
-                    # ジャンプ
-                    self.sprites[self.sprite_indexes['main_character']]['sprite'].jumpStart(image_loader, status, setting, event.key)
+                    elif event.key == pygame.K_SPACE:
+                        # ジャンプ
+                        self.sprites[self.sprite_indexes['main_character']]['sprite'].jumpStart(image_loader, status, setting, event.key)
 
             rhythm_combo_aim_action = False
 

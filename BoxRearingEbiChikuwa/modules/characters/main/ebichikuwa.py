@@ -130,6 +130,7 @@ class CharacterEbichikuwa(Character):
         if key != pygame.K_SPACE:
             return
 
+        self.clear
         if self.animation_index[1] > 8:
             self.animation_index[1] = 8
 

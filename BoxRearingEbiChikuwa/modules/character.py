@@ -72,6 +72,10 @@ class Character(pygame.sprite.Sprite):
 
         return
 
+    def clear(self, background_image):
+        pygame.display.get_surface().blit(background_image, self.rect, self.rect)
+        return
+
     def update(self, image_loader, status, setting, foregrounds, info):
         self.move(image_loader, status, setting, foregrounds, True)
 
