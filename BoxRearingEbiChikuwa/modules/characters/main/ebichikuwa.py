@@ -295,44 +295,34 @@ class CharacterEbichikuwa(Character):
         if self.animation_index[1] > 0:
             return
 
-        margin = 20
+        clear = True
+        margin = 15
+        self.combo_index += 1
 
-        for combo_index in [self.combo_index + 1, self.combo_index]:
-            if combo_index < 0 or combo_index > len(drum_rhythm.target_angle_and_keys) - 1:
-                continue
+        angle = 380 - (drum_rhythm.animation_index * 2)
+        if angle - margin < 0:
+            if drum_rhythm.target_angle_and_keys[self.combo_index][0] < 360 + (angle - margin) and drum_rhythm.target_angle_and_keys[self.combo_index][0] > angle + margin:
+                clear = False
+        elif angle + margin > 360:
+            if drum_rhythm.target_angle_and_keys[self.combo_index][0] > (angle + margin) - 360 and drum_rhythm.target_angle_and_keys[self.combo_index][0] < (angle - margin):
+                clear = False
+        else:
+            if drum_rhythm.target_angle_and_keys[self.combo_index][0] < angle - margin or drum_rhythm.target_angle_and_keys[self.combo_index][0] > angle + margin:
+                clear = False
 
-            # 早い
-            angle = 380 - (drum_rhythm.animation_index * 2)
+        # キーが違う
+        if drum_rhythm.target_angle_and_keys[self.combo_index][1] != key:
+            clear = False
 
-            if angle - margin < 0:
-                if drum_rhythm.target_angle_and_keys[combo_index][0] < 360 + (angle - margin) and drum_rhythm.target_angle_and_keys[combo_index][0] > angle + margin:
-                    continue
-            elif angle + margin > 360:
-                if drum_rhythm.target_angle_and_keys[combo_index][0] > (angle + margin) - 360 and drum_rhythm.target_angle_and_keys[combo_index][0] < (angle - margin):
-                    continue
-            else:
-                if drum_rhythm.target_angle_and_keys[combo_index][0] < angle - margin or drum_rhythm.target_angle_and_keys[combo_index][0] > angle + margin:
-                    continue
-
-            # キーが違う
-            if drum_rhythm.target_angle_and_keys[combo_index][1] != key:
-                continue
-
-            # 処理済みコンボ
-            if self.combo_index == combo_index:
-                return True
-
-            # 未処理コンボ
+        # 未処理コンボ
+        if clear == False:
+            self.combo_index = -1
+            return False
+        else:
             if pygame.key.name(key) == 'space':
                 self.combo_jump = True
                 self.y_distance = -100
-
-            self.combo_index = combo_index
-            return combo_index
-
-        self.combo_index = -1
-
-        return False
+                return self.combo_index
 
     def comboAction(self, image_loader, status, setting):
         if self.combo_index > 3:

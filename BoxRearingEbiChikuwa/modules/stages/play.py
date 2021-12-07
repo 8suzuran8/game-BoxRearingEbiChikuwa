@@ -304,8 +304,6 @@ class StagesPlay:
                     self.timeEventAction3000(image_loader, status, setting, timeevent_count)
 
                 elif event.type == pygame.KEYDOWN:
-                    self.sprites[self.sprite_indexes['main_character']]['sprite'].comboInput(event.key, self.sprites[self.sprite_indexes['rhythm_combo_drum']]['sprite'])
-
                     if event.key == pygame.K_ESCAPE:
                         pygame.quit()
                         sys.exit()
@@ -315,10 +313,7 @@ class StagesPlay:
                         rhythm_combo_aim_action = True
                         continue
 
-                    if event.key == pygame.K_z:
-                        if self.sprites[self.sprite_indexes['main_character']]['sprite'].animation_index[1] == 0:
-                            self.sprites[self.sprite_indexes['main_character']]['sprite'].attack(image_loader, status, setting)
-                    elif event.key == pygame.K_LEFT:
+                    if event.key == pygame.K_LEFT:
                         if self.sprites[self.sprite_indexes['main_character']]['sprite'].animation_index[1] == 0:
                             self.sprites[self.sprite_indexes['main_character']]['sprite'].x_distance = -2
                             self.sprites[self.sprite_indexes['main_character']]['sprite'].move(image_loader, status, setting, self.foregrounds)
@@ -327,6 +322,7 @@ class StagesPlay:
                             self.sprites[self.sprite_indexes['main_character']]['sprite'].x_distance = 2
                             self.sprites[self.sprite_indexes['main_character']]['sprite'].move(image_loader, status, setting, self.foregrounds)
                     elif event.key == pygame.K_SPACE:
+                        # ジャンプ溜め
                         if self.sprites[self.sprite_indexes['main_character']]['sprite'].fall == False:
                             self.sprites[self.sprite_indexes['main_character']]['sprite'].animation(+1, 1)
 
@@ -334,6 +330,13 @@ class StagesPlay:
                         self.sprites[self.sprite_indexes['npc']]['sprite'].clear = True
 
                 elif event.type == pygame.KEYUP:
+                    self.sprites[self.sprite_indexes['main_character']]['sprite'].comboInput(event.key, self.sprites[self.sprite_indexes['rhythm_combo_drum']]['sprite'])
+
+                    if event.key == pygame.K_z:
+                        if self.sprites[self.sprite_indexes['main_character']]['sprite'].animation_index[1] == 0:
+                            self.sprites[self.sprite_indexes['main_character']]['sprite'].attack(image_loader, status, setting)
+
+                    # ジャンプ
                     self.sprites[self.sprite_indexes['main_character']]['sprite'].jumpStart(image_loader, status, setting, event.key)
 
             rhythm_combo_aim_action = False

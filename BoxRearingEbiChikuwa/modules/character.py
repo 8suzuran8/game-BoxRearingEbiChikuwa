@@ -86,8 +86,8 @@ class Character(pygame.sprite.Sprite):
                 if i == kind:
                     continue
 
-            self.animation_index[i] = 0
-            self.animation_interval_index[i] = 0
+                self.animation_index[i] = 0
+                self.animation_interval_index[i] = 0
 
         self.animation_interval_index[kind] += self.animation_interval_step[kind]
         if self.animation_interval_index[kind] % self.animation_interval[kind] != 0:
