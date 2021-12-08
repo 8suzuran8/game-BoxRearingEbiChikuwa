@@ -26,11 +26,13 @@ class CharacterTai(Character):
 
     def update(self, image_loader, status, setting, foregrounds, info):
         # main character以外で使う?
+        self.rect.y += self.y_distance
         self.move(image_loader, status, setting, foregrounds, False)
 
         return
 
     def hookHitWall(self, kind):
         self.x_distance *= -1
+        self.y_distance *= -1
 
         return
