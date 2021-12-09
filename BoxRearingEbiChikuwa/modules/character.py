@@ -29,6 +29,7 @@ class Character(pygame.sprite.Sprite):
         self.y_distance = 0
         self.last_distance = 0
 
+        self.need_fall = True
         self.fall = False # 落ちるジャンプ
         self.crush = False
 
@@ -67,6 +68,7 @@ class Character(pygame.sprite.Sprite):
         del(self.y_distance)
         del(self.last_distance)
 
+        del(self.need_fall)
         del(self.fall)
         del(self.crush)
 
@@ -77,7 +79,7 @@ class Character(pygame.sprite.Sprite):
         return
 
     def update(self, image_loader, status, setting, foregrounds, info):
-        self.move(image_loader, status, setting, foregrounds, True)
+        self.move(image_loader, status, setting, foregrounds)
 
         return
 
@@ -169,7 +171,7 @@ class Character(pygame.sprite.Sprite):
         pass
 
     # 横移動のみ
-    def move(self, image_loader, status, setting, foregrounds, need_fall = True):
+    def move(self, image_loader, status, setting, foregrounds):
         self.animation_interval_index[0] += 1
 
         self.moveStep()
@@ -186,7 +188,7 @@ class Character(pygame.sprite.Sprite):
                         self.hookHitWall(type(foreground).__name__)
 
             # 落下の為の着地確認
-            if need_fall:
+            if self.need_fall:
                 if self.rect.top < foreground.rect.top and self.rect.bottom >= foreground.rect.top and self.rect.right > foreground.rect.left and self.rect.left < foreground.rect.right:
                     found_ground = True
 
@@ -195,7 +197,7 @@ class Character(pygame.sprite.Sprite):
             self.hookHitWall('DanballWall')
 
         # 落下
-        if need_fall:
+        if self.need_fall:
             if found_ground == False:
                 self.fall = True
 
@@ -204,6 +206,8 @@ class Character(pygame.sprite.Sprite):
             self.animation_interval_index[0] = 0
 
         self.rect.x += self.x_distance
+        if self.fall != True:
+            self.rect.y += self.y_distance
 
         if self.x_distance != 0:
             self.last_distance = self.x_distance

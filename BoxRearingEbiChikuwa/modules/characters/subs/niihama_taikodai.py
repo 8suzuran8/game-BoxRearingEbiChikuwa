@@ -19,17 +19,14 @@ class CharacterNiihamaTaikodai(Character):
         for i in range(self.animation_max[0]):
             self.frames[frame_index].append(pygame.Surface((100, 75)).convert_alpha())
 
+        self.need_fall = False
+
         return
 
     def __init__(self, image_loader, status, setting, info):
         Character.__init__(self, image_loader, status, setting, info)
 
         self.draw()
-
-        return
-
-    def update(self, image_loader, status, setting, foregrounds, info):
-        self.move(image_loader, status, setting, foregrounds, False)
 
         return
 

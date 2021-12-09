@@ -34,6 +34,8 @@ class CharacterBee(Character):
             else:
                 self.frames[frame_index].append(image_loader.get('characters/subs/bee/small_fly.svg'.replace('.svg', str(i) + '.svg')))
 
+        self.need_fall = False
+
         return
 
     def update(self, image_loader, status, setting, foregrounds, info):
@@ -62,7 +64,7 @@ class CharacterBee(Character):
 
         self.rect.y += self.y_distance
 
-        self.move(image_loader, status, setting, foregrounds, False)
+        self.move(image_loader, status, setting, foregrounds)
 
         return
 

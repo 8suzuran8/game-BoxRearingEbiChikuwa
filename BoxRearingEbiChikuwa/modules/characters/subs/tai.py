@@ -21,13 +21,7 @@ class CharacterTai(Character):
             self.frames[frame_index].append(image_loader.get('characters/subs/tai/swim' + str(i) + '.svg'))
 
         self.x_distance = -3
-
-        return
-
-    def update(self, image_loader, status, setting, foregrounds, info):
-        # main character以外で使う?
-        self.rect.y += self.y_distance
-        self.move(image_loader, status, setting, foregrounds, False)
+        self.need_fall = False
 
         return
 

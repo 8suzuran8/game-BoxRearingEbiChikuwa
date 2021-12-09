@@ -22,6 +22,8 @@ class CharacterSakuradama(Character):
         for i in range(self.animation_max[0]):
             self.frames[frame_index].append(image_loader.get('characters/subs/sakuradama/stand.svg'))
 
+        self.need_fall = False
+
         return
 
     def __del__(self):
