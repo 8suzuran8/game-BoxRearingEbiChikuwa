@@ -25,14 +25,17 @@ class CharacterBee(Physical):
         if len(info) < 3:
             info.append(self._KIND_FAT)
 
-        self.frames.append(list())
-        frame_index = len(self.frames) - 1
+        animation_type_index = 0
+        for animation_type_info in self.animation_type_infos:
+            self.frames.append(list())
+            frame_index = len(self.frames) - 1
+            for i in range(self.animation_file_max[animation_type_index]):
+                if info[2] == self._KIND_FAT:
+                    self.frames[frame_index].append(image_loader.get('characters/subs/bee/fat_' + animation_type_info[1] + str(i).zfill(1) + '.svg'))
+                else:
+                    self.frames[frame_index].append(image_loader.get('characters/subs/bee/small_' + animation_type_info[1] + str(i).zfill(1) + '.svg'))
 
-        for i in range(self.animation_max[0]):
-            if info[2] == self._KIND_FAT:
-                self.frames[frame_index].append(image_loader.get('characters/subs/bee/fat_fly.svg'.replace('.svg', str(i) + '.svg')))
-            else:
-                self.frames[frame_index].append(image_loader.get('characters/subs/bee/small_fly.svg'.replace('.svg', str(i) + '.svg')))
+            animation_type_index += 1
 
         self.need_fall = False
 

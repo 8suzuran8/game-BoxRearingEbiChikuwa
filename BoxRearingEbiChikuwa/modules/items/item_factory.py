@@ -3,7 +3,6 @@ import pygame
 from modules.common.singleton import Singleton
 from modules.items.cardboard_close import ItemsCardboardClose
 from modules.items.cardboard_open import ItemsCardboardOpen
-from modules.items.simple import ItemsSimple
 from modules.items.message import ItemsMessage
 from modules.items.stopwatch import ItemsStopwatch
 from modules.items.rhythm_combos.rhythm01 import ItemsRhythmCombosRhythm01

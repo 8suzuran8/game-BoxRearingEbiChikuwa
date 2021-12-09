@@ -17,15 +17,23 @@ class Physical(pygame.sprite.Sprite):
         self.frames = list() # 二次元配列で複数種類を入れる。animation_type_infosの数と一致させる
 
         # 以下はanimation_type_infosの数と一致させる
+        # animation_indexは常に+animation_stepする
+        # animation_indexがanimation_maxに達すると0にする
+
+        # animation_interval_countは常に+1する
+        # animation_interval_countがanimation_interval_count_max
+
+        self.animation_type_infos = [['normal', 'normal']]
         self.animation_index = [0] 
         self.animation_step = [1]
         self.animation_max = [1]
         self.animation_file_max = [1]
-        self.animation_interval = [1]
+
+        self.animation_interval_max = [1]
         self.animation_interval_index = [1]
         self.animation_interval_step = [1]
-        self.animation_interval_count = [0]
-        self.animation_interval_count_max = [0]
+        self.animation_interval_count = [1]
+        self.animation_interval_count_max = [1]
 
         self.x_distance = 0
         self.y_distance = 0
@@ -63,7 +71,7 @@ class Physical(pygame.sprite.Sprite):
         del(self.animation_index)
         del(self.animation_step)
         del(self.animation_max)
-        del(self.animation_interval)
+        del(self.animation_interval_max)
         del(self.animation_interval_index)
         del(self.animation_interval_count)
         del(self.animation_interval_count_max)
@@ -95,7 +103,7 @@ class Physical(pygame.sprite.Sprite):
             return True
 
         # 初期化
-        if self.animation_interval_index[kind] == 0:
+        if self.animation_interval_index[kind] == 0 and self.animation_interval_count[kind] == 0:
             for i in range(len(self.animation_type_infos)):
                 if i == kind:
                     continue
@@ -104,11 +112,13 @@ class Physical(pygame.sprite.Sprite):
                 self.animation_interval_index[i] = 0
                 self.animation_interval_count[i] = 0
 
-        if self.animation_interval_count[kind] == 0 or self.animation_interval_count[kind] % self.animation_interval_count_max[kind] == 0:
-            self.animation_interval_index[kind] += self.animation_interval_step[kind]
+        if self.animation_interval_max[kind] > 1 or self.animation_interval_count_max[kind] > 1:
+            if self.animation_interval_count[kind] == 0 or self.animation_interval_count[kind] % self.animation_interval_count_max[kind] == 0:
+                self.animation_interval_index[kind] += self.animation_interval_step[kind]
+                if self.animation_interval_index[kind] == 0 or self.animation_interval_index[kind] % self.animation_interval_max[kind] != 0:
+                    return True
 
-        if self.animation_interval_index[kind] % self.animation_interval[kind] != 0:
-            return True
+            self.animation_interval_count[kind] += 1
 
         if step != 0:
             step = int(step / abs(step))
@@ -215,7 +225,7 @@ class Physical(pygame.sprite.Sprite):
             if found_ground == False:
                 self.fall = True
 
-        if self.animation_interval_index[0] >= self.animation_interval[0]:
+        if self.animation_interval_index[0] >= self.animation_interval_max[0]:
             self.animation(self.x_distance)
             self.animation_interval_index[0] = 0
 

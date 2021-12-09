@@ -53,16 +53,16 @@ class CharacterEbichikuwa(Physical):
             12,
         ]
 
-        self.animation_interval = [
+        self.animation_interval_max = [
             1,
-            5,
+            4,
             50,
         ]
 
         self.animation_interval_index = [
-            1,
-            1,
-            1,
+            0,
+            0,
+            0,
         ]
 
         self.animation_interval_step = [
@@ -77,9 +77,9 @@ class CharacterEbichikuwa(Physical):
             0,
         ]
         self.animation_interval_count_max = [
-            0,
-            0,
-            0,
+            1,
+            1,
+            1,
         ]
 
         animation_type_index = 0
