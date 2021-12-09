@@ -37,30 +37,6 @@ class StagesTitle():
 
         return
 
-    def deleteVariable(self):
-        del(self.item_factory)
-
-        del(self.background_image)
-
-        # 上下選択用
-        del(self.cursor)
-        del(self.cursor_index)
-        del(self.cursor_positions)
-
-        # 左右選択用
-        # 上下メニューの数だけある
-        del(self.marks)
-        del(self.mark_indexes)
-        del(self.mark_positions)
-
-        self.sprite_group.empty()
-        del(self.sprite_group)
-
-        del(self.sprites)
-        del(self.sprite_indexes)
-
-        return
-
     def drawTitle(self, image_loader, status, setting):
         title_image = image_loader.get('stages/titles/start_title.svg')
         title_rect = title_image.get_rect()
@@ -91,7 +67,26 @@ class StagesTitle():
         return
 
     def __del__(self):
-        self.deleteVariable()
+        del(self.item_factory)
+
+        del(self.background_image)
+
+        # 上下選択用
+        del(self.cursor)
+        del(self.cursor_index)
+        del(self.cursor_positions)
+
+        # 左右選択用
+        # 上下メニューの数だけある
+        del(self.marks)
+        del(self.mark_indexes)
+        del(self.mark_positions)
+
+        self.sprite_group.empty()
+        del(self.sprite_group)
+
+        del(self.sprites)
+        del(self.sprite_indexes)
 
         return
 

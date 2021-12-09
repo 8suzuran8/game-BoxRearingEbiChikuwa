@@ -1,24 +1,53 @@
 import pygame
 
 class Weapon(pygame.sprite.Sprite):
-    x_distance = 0
-    y_distance = 0
-    last_distance = 0
-    dead = False
-    speed_max = 100
-    interval = 500
+    INTERVAL = 500
 
-    fall = False
-    combo_jump = False
+    def __new__(cls, image_loader, status, setting, info):
+        self = super().__new__(cls)
 
-    def __init__(self, image_loader, status, setting, pos, angle):
+        return self
+
+    def initializeVariable(self, image_loader, status, setting, info):
+        self.x_distance = 0
+        self.y_distance = 0
+        self.last_distance = 0
+        self.dead = False
+        self.speed_max = 100
+        self.timer = 0
+
+        self.fall = False
+        self.combo_jump = False
+
+        return
+
+    def __init__(self, image_loader, status, setting, info):
         pygame.sprite.Sprite.__init__(self)
 
+        self.initializeVariable(image_loader, status, setting, info)
+
+        return
+
+    def __del__(self):
+        del(self.x_distance)
+        del(self.y_distance)
+        del(self.last_distance)
+        del(self.dead)
+        del(self.speed_max)
+        del(self.timer)
+
+        del(self.fall)
+        del(self.combo_jump)
+
+        return
+
     def update(self, backgrounds, characters):
-        pass
+        return
 
     def draw(self, screen):
         screen.blit(self.image, self.rect)
+
+        return
 
     def jumpMove(self, backgrounds):
         g = 9.8
@@ -38,5 +67,7 @@ class Weapon(pygame.sprite.Sprite):
                 if self.rect.top < background.rect.bottom and self.rect.bottom > background.rect.top:
                     self.hookHit()
 
+        return
+
     def hookHit(self):
-        pass
+        return

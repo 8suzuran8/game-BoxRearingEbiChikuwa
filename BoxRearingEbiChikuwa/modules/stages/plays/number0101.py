@@ -60,7 +60,7 @@ class StagesPlaysNumber0101(StagesPlay):
             self.getMovingXyByPosition(image_loader, status, setting, 15, 13, self.character_factory._KIND_TAKO),
             self.getMovingXyByPosition(image_loader, status, setting, 5, 10, self.character_factory._KIND_TAI),
             self.getMovingXyByPosition(image_loader, status, setting, 3, 12, self.character_factory._KIND_NIIHAMA_TAIKODAI),
-            self.getMovingXyByPosition(image_loader, status, setting, 18, 3, self.character_factory._KIND_TAI),
+            self.getMovingXyByPosition(image_loader, status, setting, 19, 3, self.character_factory._KIND_TAI),
             self.getMovingXyByPosition(image_loader, status, setting, 3, 3, self.character_factory._KIND_TAI),
         ]
 

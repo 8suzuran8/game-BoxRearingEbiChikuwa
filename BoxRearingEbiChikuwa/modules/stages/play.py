@@ -201,24 +201,34 @@ class StagesPlay:
 
     def chkDie(self, image_loader, status, setting):
         # 死亡条件チェック
-        for character in self.characters:
+        for character in self.characters.sprites() + [self.sprites[self.sprite_indexes['main_character']]['sprite']]:
             # 敵の破壊
             killed = False
             for weapon in self.sprites[self.sprite_indexes['main_character']]['sprite'].weapons:
+                weapon_kill = False
                 if character.rect.colliderect(weapon.rect):
-                    character.kill()
-                    del(character)
-                    weapon.kill()
-                    del(weapon)
-                    killed = True
-                    break
+                    if character == self.sprites[self.sprite_indexes['main_character']]['sprite']:
+                        if weapon.timer > 10:
+                            self.sprites[self.sprite_indexes['main_character']]['sprite'].crush = True
+                            weapon_kill = True
+                    else:
+                        character.kill()
+                        del(character)
+                        weapon_kill = True
+
+                    if weapon_kill == True:
+                        weapon.kill()
+                        del(weapon)
+                        killed = True
+                        break
 
             if killed:
                 continue
 
             # 自分の破壊
-            if self.sprites[self.sprite_indexes['main_character']]['sprite'].rect.colliderect(character.rect):
-                self.sprites[self.sprite_indexes['main_character']]['sprite'].crush = True
+            if character != self.sprites[self.sprite_indexes['main_character']]['sprite']:
+                if self.sprites[self.sprite_indexes['main_character']]['sprite'].rect.colliderect(character.rect):
+                    self.sprites[self.sprite_indexes['main_character']]['sprite'].crush = True
 
         return
 
@@ -230,9 +240,11 @@ class StagesPlay:
                 pygame.display.update(self.sprites[self.sprite_indexes['main_character']]['sprite'].rect)
                 jump_target.jumpMove(self.foregrounds)
 
-            if jump_target.__class__.__name__ == 'WeaponsGun' and jump_target.dead:
-                jump_target.kill()
-                del(jump_target)
+            if jump_target.__class__.__name__ == 'WeaponsGun':
+                jump_target.timer += 1
+                if jump_target.dead:
+                    jump_target.kill()
+                    del(jump_target)
 
         # 弾丸
         self.sprites[self.sprite_indexes['main_character']]['sprite'].weapons.clear(pygame.display.get_surface(), self.sprites[self.sprite_indexes['background']]['sprite'].image)

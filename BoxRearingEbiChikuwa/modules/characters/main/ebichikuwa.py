@@ -285,7 +285,7 @@ class CharacterEbichikuwa(Physical):
 
         hole_position_and_angle = self.getHolePositionAndAngle()
 
-        self.weapons.add(self.weapons_factory.create(image_loader, status, setting, WeaponsFactory._KIND_GUN, hole_position_and_angle[0], hole_position_and_angle[1]))
+        self.weapons.add(self.weapons_factory.create(image_loader, status, setting, WeaponsFactory._KIND_GUN, hole_position_and_angle))
         self.weapons.sprites()[len(self.weapons) - 1].number = pygame.time.get_ticks()
 
         return
