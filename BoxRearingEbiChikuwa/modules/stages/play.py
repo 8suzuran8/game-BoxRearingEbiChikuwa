@@ -155,6 +155,9 @@ class StagesPlay:
             if enemy_info[2] != self.character_factory._KIND_NIIHAMA_TAIKODAI:
                 self.characters.add(self.sprites[enemy_index]['sprite'])
 
+            if len(enemy_info) == 4:
+                enemy_info[3](self.sprites[enemy_index]['sprite'])
+
         return
 
     def getMovingXyByPosition(self, image_loader, status, setting, x_index, y_index, kind):

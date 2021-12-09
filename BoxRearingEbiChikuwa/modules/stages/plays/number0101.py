@@ -64,20 +64,16 @@ class StagesPlaysNumber0101(StagesPlay):
             self.getMovingXyByPosition(image_loader, status, setting, 3, 3, self.character_factory._KIND_TAI),
         ]
 
+        def enemyOriginalInit1(this): this.y_distance = +3;return
+        def enemyOriginalInit2(this): this.y_distance = -3;return
+
+        self.enemy_infos[3].append(enemyOriginalInit1)
+        self.enemy_infos[4].append(enemyOriginalInit2)
+
         return
 
     def __init__(self, image_loader, status, setting):
         super().__init__(image_loader, status, setting)
-
-        enemy_count = 0
-        for sprite in self.sprites:
-            if sprite['key'] == 'enemy':
-                if enemy_count == 3:
-                    sprite['sprite'].y_distance = +3
-                if enemy_count == 4:
-                    sprite['sprite'].y_distance = -3
-
-                enemy_count += 1
 
         return
 
