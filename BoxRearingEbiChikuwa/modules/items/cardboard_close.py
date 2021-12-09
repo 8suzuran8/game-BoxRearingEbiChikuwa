@@ -1,7 +1,7 @@
 import pygame
 
 class ItemsCardboardClose(pygame.sprite.Sprite):
-    def __init__(self, image_loader, status, setting, path, info):
+    def __init__(self, image_loader, status, setting, info):
         pygame.sprite.Sprite.__init__(self)
 
         self.image = pygame.Surface((setting['window']['full_width'], setting['window']['full_height'])).convert()

@@ -1,7 +1,7 @@
 import pygame
 from modules.weapons.factory import WeaponsFactory
 
-class Character(pygame.sprite.Sprite):
+class Physical(pygame.sprite.Sprite):
     def __new__(cls, image_loader, status, setting, info):
         self = super().__new__(cls)
 
@@ -24,6 +24,8 @@ class Character(pygame.sprite.Sprite):
         self.animation_interval = [1]
         self.animation_interval_index = [1]
         self.animation_interval_step = [1]
+        self.animation_interval_count = [0]
+        self.animation_interval_count_max = [0]
 
         self.x_distance = 0
         self.y_distance = 0
@@ -63,6 +65,8 @@ class Character(pygame.sprite.Sprite):
         del(self.animation_max)
         del(self.animation_interval)
         del(self.animation_interval_index)
+        del(self.animation_interval_count)
+        del(self.animation_interval_count_max)
 
         del(self.x_distance)
         del(self.y_distance)
@@ -90,6 +94,7 @@ class Character(pygame.sprite.Sprite):
         if self.animation_max[kind] == 1 and self.animation_file_max[kind] == 1:
             return True
 
+        # 初期化
         if self.animation_interval_index[kind] == 0:
             for i in range(len(self.animation_type_infos)):
                 if i == kind:
@@ -97,8 +102,11 @@ class Character(pygame.sprite.Sprite):
 
                 self.animation_index[i] = 0
                 self.animation_interval_index[i] = 0
+                self.animation_interval_count[i] = 0
 
-        self.animation_interval_index[kind] += self.animation_interval_step[kind]
+        if self.animation_interval_count[kind] == 0 or self.animation_interval_count[kind] % self.animation_interval_count_max[kind] == 0:
+            self.animation_interval_index[kind] += self.animation_interval_step[kind]
+
         if self.animation_interval_index[kind] % self.animation_interval[kind] != 0:
             return True
 
@@ -109,11 +117,11 @@ class Character(pygame.sprite.Sprite):
 
         self.animation_index[kind] += step
 
-        if step > 0 and self.animation_index[kind] > self.animation_max[kind]:
+        if step > 0 and self.animation_index[kind] >= self.animation_max[kind]:
             self.animation_index[kind] = 0
 
         elif step < 0 and self.animation_index[kind] <= 0:
-            self.animation_index[kind] = self.animation_max[kind]
+            self.animation_index[kind] = self.animation_max[kind] - 1
 
         add_animation_result = self.addAnimation(step, kind)
         if add_animation_result != None:

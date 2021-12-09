@@ -1,15 +1,15 @@
 import math
 import pygame
-from modules.item import Item
+from modules.physical import Physical
 
-class ItemsRhythmCombo(Item):
-    def __new__(cls, image_loader, status, setting, path, info):
-        self = super().__new__(cls, image_loader, status, setting, path, info)
+class ItemsRhythmCombo(Physical):
+    def __new__(cls, image_loader, status, setting, info):
+        self = super().__new__(cls, image_loader, status, setting, info)
 
         return self
 
-    def initializeVariable(self, image_loader, status, setting, path, info):
-        Item.initializeVariable(self, image_loader, status, setting, path, info)
+    def initializeVariable(self, image_loader, status, setting, info):
+        Physical.initializeVariable(self, image_loader, status, setting, info)
 
         # 24個ぴったり必要
         # [True, pygame.K_SPACE] # 黒 and キー
@@ -17,9 +17,13 @@ class ItemsRhythmCombo(Item):
         # [False, False] # 透明(描画無し)
         self.target_angle_and_keys = []
 
-        self.animation_index = 0
-        self.animation_step = 1
-        self.animation_max = 360
+        self.animation_index = [0]
+        self.animation_step = [1]
+        self.animation_max = [360]
+        self.animation_file_max = [360]
+
+        self.frames.append(list())
+        frame_index = len(self.frames) - 1
 
         make_target = True
         for i in range(360):
@@ -28,12 +32,12 @@ class ItemsRhythmCombo(Item):
             if angle >= 180:
                 angle -= 180
 
-            self.surface_infos.append(pygame.Surface((105, 100)).convert_alpha())
-            surface_infos_index = len(self.surface_infos) - 1
-            self.drawRhythm(360 - angle * 2, make_target, self.surface_infos[surface_infos_index])
+            self.frames[frame_index].append(pygame.Surface((105, 100)).convert_alpha())
+            surface_infos_index = len(self.frames[frame_index]) - 1
+            self.drawRhythm(360 - angle * 2, make_target, self.frames[frame_index][surface_infos_index])
 
-            self.drawAim(self.surface_infos[surface_infos_index], [105, 60])
-            self.surface_infos[surface_infos_index].blit(image_loader.get('items/rhythm_combo/drum.svg'.replace('.svg', str(i).zfill(3) + '.svg')), [0, 0])
+            self.drawAim(self.frames[frame_index][surface_infos_index], [105, 60])
+            self.frames[frame_index][surface_infos_index].blit(image_loader.get('items/rhythm_combo/drum.svg'.replace('.svg', str(i).zfill(3) + '.svg')), [0, 0])
 
             make_target = False
 

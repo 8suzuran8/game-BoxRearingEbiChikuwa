@@ -10,7 +10,7 @@ class ItemsSimple(Item):
     def initializeVariable(self, image_loader, status, setting, path, info):
         Item.initializeVariable(self, image_loader, status, setting, path, info)
 
-        self.animation_max = 1
+        self.animation_max = [1]
 
         for i in range(self.animation_max):
             self.surface_infos.append(path)

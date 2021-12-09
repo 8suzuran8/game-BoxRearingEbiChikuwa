@@ -1,17 +1,17 @@
 import numpy as np
 import pyaudio
 import pygame
-from modules.character import Character
+from modules.physical import Physical
 from modules.weapons.factory import WeaponsFactory
 
-class CharacterEbichikuwa(Character):
+class CharacterEbichikuwa(Physical):
     def __new__(cls, image_loader, status, setting, info):
         self = super().__new__(cls, image_loader, status, setting, info)
 
         return self
 
     def initializeVariable(self, image_loader, status, setting, info):
-        Character.initializeVariable(self, image_loader, status, setting, info)
+        Physical.initializeVariable(self, image_loader, status, setting, info)
 
         self.junp_sound = False
 
@@ -30,9 +30,9 @@ class CharacterEbichikuwa(Character):
         ]
 
         self.animation_file_max = [
+            17,
             16,
-            15,
-            11
+            12
         ]
 
         self.animation_index = [
@@ -48,9 +48,9 @@ class CharacterEbichikuwa(Character):
         ]
 
         self.animation_max = [
-            32,
-            15,
-            11,
+            34,
+            16,
+            12,
         ]
 
         self.animation_interval = [
@@ -71,39 +71,37 @@ class CharacterEbichikuwa(Character):
             1,
         ]
 
-        # 歩く
-        self.frames.append(list())
-        frame_index = len(self.frames) - 1
-        for i in range(17):
-            self.frames[frame_index].append(image_loader.get('characters/main/walk' + str(i).zfill(2) + '.svg'))
-        # 18は16の左右反転
-        # 19は15の左右反転
-        # 20は14の左右反転
-        # ・・・
+        self.animation_interval_count = [
+            0,
+            0,
+            0,
+        ]
+        self.animation_interval_count_max = [
+            0,
+            0,
+            0,
+        ]
 
-        # しゃがむ
-        self.frames.append(list())
-        frame_index = len(self.frames) - 1
-        for i in range(16):
-            self.frames[frame_index].append(image_loader.get('characters/main/squat' + str(i).zfill(2) + '.svg'))
+        animation_type_index = 0
+        for animation_type_info in self.animation_type_infos:
+            self.frames.append(list())
+            frame_index = len(self.frames) - 1
+            for i in range(self.animation_file_max[animation_type_index]):
+                self.frames[frame_index].append(image_loader.get('characters/main/' + animation_type_info[1] + str(i).zfill(2) + '.svg'))
 
-        # 潰れる
-        self.frames.append(list())
-        frame_index = len(self.frames) - 1
-        for i in range(12):
-            self.frames[frame_index].append(image_loader.get('characters/main/crush' + str(i).zfill(2) + '.svg'))
+            animation_type_index += 1
 
         return
 
     def __init__(self, image_loader, status, setting, info):
-        Character.__init__(self, image_loader, status, setting, info)
+        Physical.__init__(self, image_loader, status, setting, info)
 
         self.jump_sound = self.makeJumpSound()
 
         return
 
     def __del__(self):
-        Character.__del__(self)
+        Physical.__del__(self)
 
         del(self.junp_sound)
 
@@ -136,7 +134,7 @@ class CharacterEbichikuwa(Character):
 
         temp_y_distance = self.animation_index[1] * -15
 
-        Character.jumpStart(self, image_loader, status, setting, key)
+        Physical.jumpStart(self, image_loader, status, setting, key)
 
         # 飛べ
         self.y_distance = temp_y_distance
@@ -184,21 +182,21 @@ class CharacterEbichikuwa(Character):
     def addAnimation(self, step, kind = 0):
         if kind == 1:
             # しゃがむアニメーションの限界
-            if self.animation_index[1] >= self.animation_max[1]:
+            if self.animation_index[kind] >= self.animation_max[kind] - 1:
                 self.crush = True
                 return True
 
         if kind == 2:
             # クラッシュアニメーションの終了
-            if self.animation_index[kind] >= self.animation_max[kind]:
+            if self.animation_index[kind] >= self.animation_max[kind] - 1:
                 return -2
 
         if kind == 0:
             # 左右無し　且つ　アニメーションの半分を左右反転で対応
-            if self.animation_index[kind] > self.animation_file_max[kind]:
-                self.image = pygame.transform.flip(self.frames[kind][self.animation_file_max[kind] - (self.animation_index[kind] - self.animation_file_max[kind])], True, False)
-            else:
+            if self.animation_index[kind] < self.animation_file_max[kind]:
                 self.image = self.frames[kind][self.animation_index[kind]]
+            else:
+                self.image = pygame.transform.flip(self.frames[kind][self.animation_file_max[kind] - (self.animation_index[kind] - self.animation_file_max[kind]) - 1], True, False)
 
             return True
 
@@ -300,7 +298,7 @@ class CharacterEbichikuwa(Character):
         margin = 15
         self.combo_index += 1
 
-        angle = 380 - (drum_rhythm.animation_index * 2)
+        angle = 380 - (drum_rhythm.animation_index[0] * 2)
         if angle - margin < 0:
             if drum_rhythm.target_angle_and_keys[self.combo_index][0] < 360 + (angle - margin) and drum_rhythm.target_angle_and_keys[self.combo_index][0] > angle + margin:
                 clear = False

@@ -36,7 +36,7 @@ class StagesPlay:
     def createSprites(self, image_loader, status, setting):
         # 背景
         self.sprites.append({
-            'sprite': self.item_factory.create(image_loader, status, setting, 'items_cardboard_open', '', [0, 0]),
+            'sprite': self.item_factory.create(image_loader, status, setting, 'items_cardboard_open', [0, 0]),
             'key': 'background',
         })
         self.sprite_indexes['background'] = len(self.sprites) - 1
@@ -52,7 +52,7 @@ class StagesPlay:
         x = setting['window']['margin_left'] + setting['window']['moving_width'] / 2 - 28
         y = 0
         self.sprites.append({
-            'sprite': self.item_factory.create(image_loader, status, setting, 'items_stopwatch', '99', [x, y]),
+            'sprite': self.item_factory.create(image_loader, status, setting, 'items_stopwatch', [x, y]),
             'key': 'stopwatch',
         })
         self.sprite_indexes['stopwatch'] = len(self.sprites) - 1
@@ -61,7 +61,7 @@ class StagesPlay:
         # 浮遊ブロック
         for floating_block_info in self.floating_block_infos:
             self.sprites.append({
-                'sprite': self.item_factory.create(image_loader, status, setting, 'items_floating_block', '', floating_block_info),
+                'sprite': self.item_factory.create(image_loader, status, setting, 'items_floating_block', floating_block_info),
                 'key': 'floating_block',
             })
             floating_block_index = len(self.sprites) - 1
@@ -72,7 +72,7 @@ class StagesPlay:
         x = setting['window']['full_width'] / 2 - 50
         y = setting['window']['margin_top'] + 30
         self.sprites.append({
-            'sprite': self.item_factory.create(image_loader, status, setting, 'items_bee_house', 'items/bee_house.svg', [x, y]),
+            'sprite': self.item_factory.create(image_loader, status, setting, 'items_bee_house', [x, y]),
             'key': 'bee_house',
         })
         self.sprite_indexes['bee_house'] = len(self.sprites) - 1
@@ -82,18 +82,19 @@ class StagesPlay:
         x = 200
         y = 0
         self.sprites.append({
-            'sprite': self.item_factory.create(image_loader, status, setting, 'items_rhythm_combos_rhythm01', '', [x, y]),
+            'sprite': self.item_factory.create(image_loader, status, setting, 'items_rhythm_combos_rhythm01', [x, y]),
             'key': 'rhythm_combo',
         })
         self.sprite_indexes['rhythm_combo_drum'] = len(self.sprites) - 1
         self.speed_animations.add(self.sprites[self.sprite_indexes['rhythm_combo_drum']]['sprite'])
+
         # 吹き出し
         message_position = [
             self.npc_position[0] + setting['window']['block_size'],
             self.npc_position[1],
         ]
         self.sprites.append({
-            'sprite': self.item_factory.create(image_loader, status, setting, 'items_message', '', message_position),
+            'sprite': self.item_factory.create(image_loader, status, setting, 'items_message', message_position),
             'key': 'message',
         })
         self.sprite_indexes['message'] = len(self.sprites) - 1
@@ -102,7 +103,7 @@ class StagesPlay:
         x = setting['window']['margin_left']
         y = setting['window']['margin_top'] - setting['window']['block_size']
         self.sprites.append({
-            'sprite': self.item_factory.create(image_loader, status, setting, 'items_transparent_block', '', [x, y]),
+            'sprite': self.item_factory.create(image_loader, status, setting, 'items_transparent_block', [x, y]),
             'key': 'topground',
         })
         self.sprite_indexes['topground'] = len(self.sprites) - 1
@@ -112,7 +113,7 @@ class StagesPlay:
         x = setting['window']['margin_left']
         y = setting['window']['margin_top'] + setting['window']['moving_height']
         self.sprites.append({
-            'sprite': self.item_factory.create(image_loader, status, setting, 'items_transparent_block', '', [x, y]),
+            'sprite': self.item_factory.create(image_loader, status, setting, 'items_transparent_block', [x, y]),
             'key': 'bottomground',
         })
         self.sprite_indexes['bottomground'] = len(self.sprites) - 1
@@ -122,7 +123,7 @@ class StagesPlay:
 
         # タイムトラベルゾーン
         self.sprites.append({
-            'sprite': self.item_factory.create(image_loader, status, setting, 'items_time_travel_zone', '', self.time_travel_zone_position),
+            'sprite': self.item_factory.create(image_loader, status, setting, 'items_time_travel_zone', self.time_travel_zone_position),
             'key': 'time_travel_zone',
         })
         self.sprite_indexes['time_travel_zone'] = len(self.sprites) - 1
@@ -244,7 +245,7 @@ class StagesPlay:
         for speed_animation in self.speed_animations.sprites():
             if type(speed_animation).__name__.startswith('Items'):
                 # Characterはmoveに合わせてアニメーションさせるため。
-                speed_animation.animation()
+                speed_animation.animation(+1)
 
         return
 
@@ -358,7 +359,7 @@ class StagesPlay:
             rect_list += self.animations.draw(surface)
             rect_list += self.speed_animations.draw(surface)
             rect_list += [self.sprites[self.sprite_indexes['npc']]['sprite'].rect]
-            rect_list += [self.sprites[self.sprite_indexes['message']]['sprite'].rect]
+            # rect_list += [self.sprites[self.sprite_indexes['message']]['sprite'].rect]
             rect_list += [self.sprites[self.sprite_indexes['main_character']]['sprite'].rect]
 
             if len(rect_list) > 0:

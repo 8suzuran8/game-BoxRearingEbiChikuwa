@@ -73,7 +73,7 @@ class StagesTitle():
 
     def createSprites(self, image_loader, status, setting):
         self.sprites.append({
-            'sprite': self.item_factory.create(image_loader, status, setting, 'items_cardboard_close', '', [0, 0]),
+            'sprite': self.item_factory.create(image_loader, status, setting, 'items_cardboard_close', [0, 0]),
             'key': 'background',
         })
         self.sprite_indexes['background'] = len(self.sprites) - 1

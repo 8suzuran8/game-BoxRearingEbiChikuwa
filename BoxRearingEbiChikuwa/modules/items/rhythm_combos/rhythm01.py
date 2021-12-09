@@ -2,12 +2,12 @@ import pygame
 from modules.items.rhythm_combo import ItemsRhythmCombo
 
 class ItemsRhythmCombosRhythm01(ItemsRhythmCombo):
-    def __new__(cls, image_loader, status, setting, path, info):
-        self = super().__new__(cls, image_loader, status, setting, path, info)
+    def __new__(cls, image_loader, status, setting, info):
+        self = super().__new__(cls, image_loader, status, setting, info)
 
         return self
 
-    def initializeVariable(self, image_loader, status, setting, path, info):
+    def initializeVariable(self, image_loader, status, setting, info):
         # 24個ぴったり必要
         # [True, pygame.K_SPACE] # 黒 and キー
         # [True, False] # 白
@@ -47,7 +47,7 @@ class ItemsRhythmCombosRhythm01(ItemsRhythmCombo):
             [False, False],
         ]
 
-        ItemsRhythmCombo.initializeVariable(self, image_loader, status, setting, path, info)
+        ItemsRhythmCombo.initializeVariable(self, image_loader, status, setting, info)
 
         return
 

@@ -1,7 +1,7 @@
 import pygame
-from modules.character import Character
+from modules.physical import Physical
 
-class CharacterBee(Character):
+class CharacterBee(Physical):
     _KIND_FAT = 1
     _KIND_SMALL = 2
 
@@ -11,13 +11,13 @@ class CharacterBee(Character):
         return self
 
     def initializeVariable(self, image_loader, status, setting, info):
-        Character.initializeVariable(self, image_loader, status, setting, info)
+        Physical.initializeVariable(self, image_loader, status, setting, info)
 
         self.animation_type_infos = [['fly', 'fly']]
-        self.animation_file_max = [3]
+        self.animation_file_max = [4]
         self.animation_index = [0]
         self.animation_step = [1]
-        self.animation_max = [3]
+        self.animation_max = [4]
         self.animation_interval = [1]
         self.animation_interval_index = [0]
         self.animation_interval_step = [1]
@@ -28,7 +28,7 @@ class CharacterBee(Character):
         self.frames.append(list())
         frame_index = len(self.frames) - 1
 
-        for i in range(self.animation_max[0] + 1):
+        for i in range(self.animation_max[0]):
             if info[2] == self._KIND_FAT:
                 self.frames[frame_index].append(image_loader.get('characters/subs/bee/fat_fly.svg'.replace('.svg', str(i) + '.svg')))
             else:

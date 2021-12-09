@@ -1,5 +1,5 @@
 import pygame
-from modules.item import Item
+from modules.physical import Physical
 
 class ItemsStopwatchTime(pygame.sprite.Sprite):
     def __init__(self, image_loader, status, setting, time):
@@ -37,19 +37,22 @@ class ItemsStopwatchTime(pygame.sprite.Sprite):
 
         pygame.display.get_surface().blit(self.image, self.rect)
 
-class ItemsStopwatch(Item):
-    def __new__(cls, image_loader, status, setting, path, info):
-        self = super().__new__(cls, image_loader, status, setting, path, info)
+class ItemsStopwatch(Physical):
+    def __new__(cls, image_loader, status, setting, info):
+        self = super().__new__(cls, image_loader, status, setting, info)
 
         return self
 
-    def initializeVariable(self, image_loader, status, setting, path, info):
-        Item.initializeVariable(self, image_loader, status, setting, path, info)
+    def initializeVariable(self, image_loader, status, setting, info):
+        Physical.initializeVariable(self, image_loader, status, setting, info)
 
-        self.animation_max = 1
+        self.animation_max = [1]
 
-        for i in range(self.animation_max):
-            self.surface_infos.append('items/time_frame.svg')
+        self.frames.append(list())
+        frame_index = len(self.frames) - 1
+
+        for i in range(self.animation_max[frame_index]):
+            self.frames[frame_index].append(image_loader.get('items/time_frame.svg'))
 
         return
 

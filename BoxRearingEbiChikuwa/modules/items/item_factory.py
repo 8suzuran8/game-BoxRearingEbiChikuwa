@@ -13,5 +13,5 @@ from modules.items.transparent_block import ItemsTransparentBlock # 地面
 from modules.items.floating_block import ItemsFloatingBlock # 浮くブロック
 
 class ItemFactory(Singleton):
-    def create(self, image_loader, status, setting, kind, path, info):
-        return eval(str(kind).title().replace('_', '') + '(image_loader, status, setting, path, info)')
+    def create(self, image_loader, status, setting, kind, info):
+        return eval(str(kind).title().replace('_', '') + '(image_loader, status, setting, info)')
