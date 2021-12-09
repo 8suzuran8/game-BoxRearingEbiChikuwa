@@ -87,6 +87,9 @@ class Character(pygame.sprite.Sprite):
         return None
 
     def animation(self, step, kind = 0):
+        if self.animation_max[kind] == 1 and self.animation_file_max[kind] == 1:
+            return True
+
         if self.animation_interval_index[kind] == 0:
             for i in range(len(self.animation_type_infos)):
                 if i == kind:
@@ -172,6 +175,9 @@ class Character(pygame.sprite.Sprite):
 
     # 横移動のみ
     def move(self, image_loader, status, setting, foregrounds):
+        if self.y_distance == 0 and self.x_distance == 0:
+            return
+
         self.animation_interval_index[0] += 1
 
         self.moveStep()
