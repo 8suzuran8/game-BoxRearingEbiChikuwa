@@ -7,6 +7,7 @@ from modules.characters.subs.tako import CharacterTako
 from modules.characters.subs.tai import CharacterTai
 from modules.characters.subs.bee import CharacterBee
 from modules.characters.subs.sakuradama import CharacterSakuradama
+from modules.characters.subs.ammonite import CharacterAmmonite
 
 class CharacterFactory(Singleton):
     _KIND_NIIHAMA_TAIKODAI = 2
@@ -15,6 +16,7 @@ class CharacterFactory(Singleton):
     _KIND_TAI = 5
     _KIND_BEE = 6
     _KIND_SAKURADAMA = 7
+    _KIND_AMMONITE = 8
 
     def create(self, image_loader, status, setting, kind, info):
         if kind == CharacterFactory._KIND_NIIHAMA_TAIKODAI:
@@ -31,3 +33,5 @@ class CharacterFactory(Singleton):
             return CharacterBee(image_loader, status, setting, info)
         elif kind == CharacterFactory._KIND_SAKURADAMA:
             return CharacterSakuradama(image_loader, status, setting, info)
+        elif kind == CharacterFactory._KIND_AMMONITE:
+            return CharacterAmmonite(image_loader, status, setting, info)

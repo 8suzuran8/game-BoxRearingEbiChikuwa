@@ -65,6 +65,9 @@ class ImageLoader(Singleton):
         for i in range(4):
             self.images['characters/subs/bee/small_fly' + str(i) + '.svg'] = pygame.image.load(base_path + 'characters/subs/bee/small_fly' + str(i) + '.svg').convert_alpha()
 
+        for i in range(1):
+            self.images['characters/subs/ammonite/swim.svg'] = pygame.image.load(base_path + 'characters/subs/ammonite/swim.svg').convert_alpha()
+
         self.images['characters/subs/sakuradama/stand.svg'] = pygame.image.load(base_path + 'characters/subs/sakuradama/stand.svg').convert_alpha()
 
         for i in range(360):

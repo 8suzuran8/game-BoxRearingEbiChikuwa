@@ -212,9 +212,13 @@ class StagesPlay:
                             self.sprites[self.sprite_indexes['main_character']]['sprite'].crush = True
                             weapon_kill = True
                     else:
-                        character.kill()
-                        del(character)
-                        weapon_kill = True
+                        if type(character).__name__ != 'CharacterAmmonite':
+                            character.kill()
+                            del(character)
+                            weapon_kill = True
+                        else:
+                            weapon.x_distance *= -1
+                            weapon.y_distance *= -1
 
                     if weapon_kill == True:
                         weapon.kill()

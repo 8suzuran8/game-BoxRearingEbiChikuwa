@@ -201,20 +201,24 @@ class Physical(pygame.sprite.Sprite):
         self.moveStep()
 
         found_ground = False
+        called_hook_hit_wall = False
         for foreground in foregrounds:
             # 横へ移動中に衝突
             if self.rect.top < foreground.rect.bottom and self.rect.bottom > foreground.rect.top:
                 if self.x_distance > 0:
                     if self.rect.right + 1 >= foreground.rect.left and self.rect.right + 1 <= foreground.rect.right:
                         self.hookHitWall(type(foreground).__name__)
+                        called_hook_hit_wall = True
                 elif self.x_distance < 0:
                     if self.rect.left - 1 <= foreground.rect.right and self.rect.left - 1 >= foreground.rect.left:
                         self.hookHitWall(type(foreground).__name__)
+                        called_hook_hit_wall = True
 
             # 落下の為の着地確認
-            if self.need_fall:
-                if self.rect.top < foreground.rect.top and self.rect.bottom >= foreground.rect.top and self.rect.right > foreground.rect.left and self.rect.left < foreground.rect.right:
-                    found_ground = True
+            if self.rect.top < foreground.rect.top and self.rect.bottom >= foreground.rect.top and self.rect.right > foreground.rect.left and self.rect.left < foreground.rect.right:
+                if self.need_fall == False and called_hook_hit_wall == False:
+                    self.hookHitWall(type(foreground).__name__)
+                found_ground = True
 
         # 段ボールの壁に衝突
         if (self.x_distance < 0 and self.rect.left <= setting['window']['margin_left']) or (self.x_distance > 0 and self.rect.right >= setting['window']['full_width'] - setting['window']['margin_right']):
