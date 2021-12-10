@@ -21,6 +21,7 @@ class CharacterAmmonite(Physical):
 
             animation_type_index += 1
 
+        self.unbeatable = True
         self.x_distance = 0
         self.y_distance = +1
         self.need_fall = False

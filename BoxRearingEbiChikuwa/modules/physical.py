@@ -42,6 +42,7 @@ class Physical(pygame.sprite.Sprite):
         self.need_fall = True
         self.fall = False # 落ちるジャンプ
         self.crush = False
+        self.unbeatable = False
 
         return
 
@@ -83,6 +84,7 @@ class Physical(pygame.sprite.Sprite):
         del(self.need_fall)
         del(self.fall)
         del(self.crush)
+        del(self.unbeatable)
 
         return
 
