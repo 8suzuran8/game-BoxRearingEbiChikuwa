@@ -313,7 +313,6 @@ class CharacterEbichikuwa(Physical):
         if drum_rhythm.target_angle_and_keys[self.combo_index][1] != key:
             clear = False
 
-        # 未処理コンボ
         if clear == False:
             self.combo_index = -1
             return False
@@ -321,7 +320,8 @@ class CharacterEbichikuwa(Physical):
             if pygame.key.name(key) == 'space':
                 self.combo_jump = True
                 self.y_distance = -100
-                return self.combo_index
+
+        return self.combo_index
 
     def comboAction(self, image_loader, status, setting):
         if self.combo_index > 3:

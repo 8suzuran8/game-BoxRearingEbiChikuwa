@@ -159,6 +159,22 @@ class StagesPlay:
             if len(enemy_info) == 4:
                 enemy_info[3](self.sprites[enemy_index]['sprite'])
 
+        # stage number
+        self.sprites.append({
+            'sprite': setting['font'].render('STAGE ' + str(status['stage']), True, (0, 0, 0)),
+            'key': 'stage',
+        })
+        self.sprite_indexes['stage'] = len(self.sprites) - 1
+
+        # score
+        self.sprites.append({
+            'sprite': setting['font'].render('SCORE ' + str(status['score']), True, (0, 0, 0)),
+            'key': 'score',
+            'x': setting['window']['full_width'] / 2 + 300,
+            'y': 40,
+        })
+        self.sprite_indexes['score'] = len(self.sprites) - 1
+
         return
 
     def getMovingXyByPosition(self, image_loader, status, setting, x_index, y_index, kind):
@@ -174,6 +190,7 @@ class StagesPlay:
 
         pygame.display.get_surface().blit(self.sprites[self.sprite_indexes['background']]['sprite'].image, self.sprites[self.sprite_indexes['background']]['sprite'].rect)
         pygame.display.get_surface().blit(self.sprites[self.sprite_indexes['stopwatch']]['sprite'].image, self.sprites[self.sprite_indexes['stopwatch']]['sprite'].rect)
+        pygame.display.get_surface().blit(self.sprites[self.sprite_indexes['stage']]['sprite'], (setting['window']['full_width'] / 2 + 100, 40))
 
         pygame.key.set_repeat(30)
         pygame.time.set_timer(self.PYGAME_EVENTTYPE_TIMEREVENT, 50)
@@ -213,6 +230,7 @@ class StagesPlay:
                             weapon_kill = True
                     else:
                         if character.unbeatable == False:
+                            status['score'] += 10
                             character.kill()
                             del(character)
                             weapon_kill = True
@@ -318,6 +336,11 @@ class StagesPlay:
             self.animations.clear(surface, self.background_image)
             self.speed_animations.clear(surface, self.background_image)
 
+            rect = self.sprites[self.sprite_indexes['score']]['sprite'].get_rect()
+            rect.x = self.sprites[self.sprite_indexes['score']]['x']
+            rect.y = self.sprites[self.sprite_indexes['score']]['y']
+            surface.blit(self.background_image, rect, rect)
+
             for event in pygame.event.get():
                 if event.type == self.PYGAME_EVENTTYPE_TIMEREVENT: # 50 ms
                     timeevent_count += 1
@@ -354,7 +377,9 @@ class StagesPlay:
                         self.sprites[self.sprite_indexes['npc']]['sprite'].clear = True
 
                 elif event.type == pygame.KEYUP:
-                    self.sprites[self.sprite_indexes['main_character']]['sprite'].comboInput(event.key, self.sprites[self.sprite_indexes['rhythm_combo_drum']]['sprite'])
+                    combo_index = self.sprites[self.sprite_indexes['main_character']]['sprite'].comboInput(event.key, self.sprites[self.sprite_indexes['rhythm_combo_drum']]['sprite'])
+                    if type(combo_index).__name__ == 'int' and combo_index >= self.sprites[self.sprite_indexes['rhythm_combo_drum']]['sprite'].clear_max:
+                        status['score'] += 10000
 
                     if event.key == pygame.K_z:
                         if self.sprites[self.sprite_indexes['main_character']]['sprite'].animation_index[1] == 0:
@@ -370,6 +395,9 @@ class StagesPlay:
             if self.sprites[self.sprite_indexes['npc']]['sprite'].clear == True:
                 surface.blit(self.sprites[self.sprite_indexes['message']]['sprite'].image, self.sprites[self.sprite_indexes['message']]['sprite'].rect)
             surface.blit(self.sprites[self.sprite_indexes['main_character']]['sprite'].image, self.sprites[self.sprite_indexes['main_character']]['sprite'].rect)
+
+            self.sprites[self.sprite_indexes['score']]['sprite'] = setting['font'].render('SCORE ' + str(status['score']), True, (0, 0, 0))
+            surface.blit(self.sprites[self.sprite_indexes['score']]['sprite'], (setting['window']['full_width'] / 2 + 300, 40))
 
             rect_list += self.sprites[self.sprite_indexes['main_character']]['sprite'].weapons.draw(surface)
             rect_list += self.animations.draw(surface)

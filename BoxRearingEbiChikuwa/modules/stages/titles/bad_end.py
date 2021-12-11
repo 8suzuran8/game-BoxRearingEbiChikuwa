@@ -67,6 +67,10 @@ class StagesTitlesBadEnd(StagesTitlesCursor):
     def chk_menu(self, image_loader, status, setting):
         if self.cursor_index == 0:
             # CONTINUE
+            status['score'] -= 1000
+            if status['score'] < 0:
+                status['score'] = 0
+
             return status['stage']
             pass
         else:

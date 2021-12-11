@@ -16,6 +16,7 @@ class ItemsRhythmCombo(Physical):
         # [True, False] # 白
         # [False, False] # 透明(描画無し)
         self.target_angle_and_keys = []
+        self.clear_max = 0
 
         self.animation_index = [0]
         self.animation_step = [1]
@@ -41,12 +42,18 @@ class ItemsRhythmCombo(Physical):
 
             make_target = False
 
+        self.clear_max = -1
+        for target_rhythm_and_key in self.target_rhythm_and_keys:
+            if target_rhythm_and_key[0] == True and target_rhythm_and_key[1] != False:
+                self.clear_max += 1
+
         return
 
     def __del__(self):
         super().__del__()
 
         del(self.target_angle_and_keys)
+        del(self.clear_max)
 
         return
 

@@ -5,7 +5,7 @@ from modules.common.image_loader import ImageLoader
 
 class Manager:
     status = {'score': 0, 'stage': '0101'}
-    setting = {'language': 'en', 'speed': 0, 'difficult': 0, 'window': {}}
+    setting = {'language': 'en', 'speed': 0, 'difficult': 0, 'window': {}, 'font': None}
     image_loader = False
 
     def __new__(cls):
@@ -20,6 +20,7 @@ class Manager:
         self.image_loader.setting(self.setting['language'])
 
         window_size = pygame.display.get_surface().get_size()
+        self.setting['font'] = pygame.font.SysFont('sans-serif', 30, False)
 
         self.setting['window']['block_size'] = 50
         self.setting['window']['full_width'] = window_size[0]
