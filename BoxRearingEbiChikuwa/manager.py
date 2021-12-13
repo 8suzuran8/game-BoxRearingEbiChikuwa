@@ -48,4 +48,5 @@ class Manager:
             if next_stage_kind == -2:
                 pygame.time.wait(1000)
 
-            del self.current_stage
+            del(self.current_stage)
+            self.image_loader.resetMessage()

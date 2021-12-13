@@ -11,22 +11,16 @@ class StagesPlaysNumber0101(StagesPlay):
     def initializeVariable(self, image_loader, status, setting):
         StagesPlay.initializeVariable(self, image_loader, status, setting)
 
-        self.main_character_initial_position = [
-            setting['window']['margin_left'] + setting['window']['block_size'] * 7,
-            setting['window']['full_height'] - setting['window']['margin_bottom'] - setting['window']['block_size'],
-        ]
-        self.npc_position = [
-            setting['window']['margin_left'],
-            setting['window']['margin_top'] + setting['window']['block_size'] * 6,
-        ]
-        self.time_travel_zone_position = [
-            setting['window']['margin_left'],
-            setting['window']['margin_top'] + setting['window']['block_size'] * 10,
-        ]
+        self.next_stage = '0102'
 
         # 左上が[0, 0]
         # 中中が[11, 7]
         # 右下が[22, 13]
+
+        self.main_character_initial_position = self.getMovingXyByPosition(image_loader, status, setting, 6, 13, 'single')
+        self.npc_position = self.getMovingXyByPosition(image_loader, status, setting, 0, 6, 'single')
+        self.time_travel_zone_position = self.getMovingXyByPosition(image_loader, status, setting, 0, 10, 'single')
+
         self.floating_block_infos = [
             self.getMovingXyByPosition(image_loader, status, setting, 11, 13, 'single'),
 
@@ -81,6 +75,7 @@ class StagesPlaysNumber0101(StagesPlay):
     def __del__(self):
         super().__del__()
 
+        del(self.next_stage)
         del(self.main_character_initial_position)
         del(self.npc_position)
         del(self.time_travel_zone_position)

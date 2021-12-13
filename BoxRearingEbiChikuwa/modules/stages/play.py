@@ -89,10 +89,17 @@ class StagesPlay:
         self.speed_animations.add(self.sprites[self.sprite_indexes['rhythm_combo_drum']]['sprite'])
 
         # 吹き出し
-        message_position = [
-            self.npc_position[0] + setting['window']['block_size'],
-            self.npc_position[1],
-        ]
+        message_position = list()
+        if self.npc_position[0] < setting['window']['full_width'] / 2:
+            message_position.append(self.npc_position[0] + setting['window']['block_size'])
+        else:
+            message_position.append(self.npc_position[0] - (setting['window']['block_size'] * 5))
+
+        if self.npc_position[1] == setting['window']['margin_top'] + setting['window']['moving_height'] - setting['window']['block_size']:
+            message_position.append(self.npc_position[1] - setting['window']['block_size'])
+        else:
+            message_position.append(self.npc_position[1])
+
         self.sprites.append({
             'sprite': self.item_factory.create(image_loader, status, setting, 'items_message', message_position),
             'key': 'message',
@@ -177,12 +184,16 @@ class StagesPlay:
 
         return
 
-    def getMovingXyByPosition(self, image_loader, status, setting, x_index, y_index, kind):
-        return [
+    def getMovingXyByPosition(self, image_loader, status, setting, x_index, y_index, kind = None):
+        result = [
             setting['window']['margin_left'] + setting['window']['block_size'] * x_index,
             setting['window']['margin_top'] + setting['window']['block_size'] * y_index,
-            kind,
         ]
+
+        if kind != None:
+            result.append(kind)
+
+        return result
 
     def __init__(self, image_loader, status, setting):
         self.initializeVariable(image_loader, status, setting)
@@ -330,6 +341,9 @@ class StagesPlay:
 
                 continue
 
+            if self.sprites[self.sprite_indexes['main_character']]['sprite'].rect.colliderect(self.sprites[self.sprite_indexes['time_travel_zone']]['sprite'].rect) == False:
+                self.sprites[self.sprite_indexes['main_character']]['sprite'].timeTravelReset(image_loader, status, setting)
+
             pygame.time.wait(30)
 
             self.sprites[self.sprite_indexes['main_character']]['sprite'].clear(self.background_image)
@@ -380,6 +394,11 @@ class StagesPlay:
                     combo_index = self.sprites[self.sprite_indexes['main_character']]['sprite'].comboInput(event.key, self.sprites[self.sprite_indexes['rhythm_combo_drum']]['sprite'])
                     if type(combo_index).__name__ == 'int' and combo_index >= self.sprites[self.sprite_indexes['rhythm_combo_drum']]['sprite'].clear_max:
                         status['score'] += 10000
+
+                    if self.sprites[self.sprite_indexes['main_character']]['sprite'].rect.colliderect(self.sprites[self.sprite_indexes['time_travel_zone']]['sprite'].rect) == True:
+                        if self.sprites[self.sprite_indexes['main_character']]['sprite'].timeTravelKey(image_loader, status, setting, event.key, self.sprites[self.sprite_indexes['message']]['sprite'].keys):
+                            # next stage
+                            return self.next_stage
 
                     if event.key == pygame.K_z:
                         if self.sprites[self.sprite_indexes['main_character']]['sprite'].animation_index[1] == 0:
