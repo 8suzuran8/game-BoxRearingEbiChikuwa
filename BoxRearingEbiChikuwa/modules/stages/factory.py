@@ -6,6 +6,7 @@ from modules.stages.titles.option import StagesTitlesOption
 from modules.stages.titles.bad_end import StagesTitlesBadEnd
 from modules.stages.titles.good_end import StagesTitlesGoodEnd
 from modules.stages.plays.number0101 import StagesPlaysNumber0101
+from modules.stages.plays.number0102 import StagesPlaysNumber0102
 
 class StageFactory(Singleton):
     def create(self, kind, image_loader, status, setting):

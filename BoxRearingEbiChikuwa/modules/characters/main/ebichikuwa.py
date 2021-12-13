@@ -14,6 +14,7 @@ class CharacterEbichikuwa(Physical):
         Physical.initializeVariable(self, image_loader, status, setting, info)
 
         self.junp_sound = False
+        self.time_travel_key_index = 0
 
         # 落ちないジャンプ。コンボでしか使わない
         self.combo_jump = False
@@ -104,6 +105,7 @@ class CharacterEbichikuwa(Physical):
         Physical.__del__(self)
 
         del(self.junp_sound)
+        del(self.time_travel_key_index)
 
         del(self.combo_jump)
         del(self.combo_index)
@@ -341,3 +343,18 @@ class CharacterEbichikuwa(Physical):
             self.fall = True
 
         return
+
+    def timeTravelReset(self, image_loader, status, setting):
+        self.time_travel_key_index = 0
+        return
+
+    def timeTravelKey(self, image_loader, status, setting, input_key, keys):
+        if input_key == keys[self.time_travel_key_index]:
+            self.time_travel_key_index += 1
+        else:
+            self.timeTravelReset(image_loader, status, setting)
+
+        if self.time_travel_key_index >= len(keys):
+            return True
+
+        return False
