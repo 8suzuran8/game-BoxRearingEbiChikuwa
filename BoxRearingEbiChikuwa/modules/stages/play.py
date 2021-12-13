@@ -398,6 +398,9 @@ class StagesPlay:
                     if self.sprites[self.sprite_indexes['main_character']]['sprite'].rect.colliderect(self.sprites[self.sprite_indexes['time_travel_zone']]['sprite'].rect) == True:
                         if self.sprites[self.sprite_indexes['main_character']]['sprite'].timeTravelKey(image_loader, status, setting, event.key, self.sprites[self.sprite_indexes['message']]['sprite'].keys):
                             # next stage
+                            status['score'] += 100
+                            status['score'] += self.stopwatch_timer
+                            status['stage'] = self.next_stage
                             return self.next_stage
 
                     if event.key == pygame.K_z:
