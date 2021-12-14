@@ -280,7 +280,7 @@ class StagesPlay:
         for jump_target in pygame.sprite.RenderUpdates(self.characters, self.sprites[self.sprite_indexes['main_character']]['sprite'], self.sprites[self.sprite_indexes['main_character']]['sprite'].weapons):
             if jump_target.fall or (jump_target.__class__.__name__ == 'CharacterEbichikuwa' and jump_target.combo_jump):
                 self.sprites[self.sprite_indexes['main_character']]['sprite'].clear(self.background_image)
-                pygame.display.update(self.sprites[self.sprite_indexes['main_character']]['sprite'].rect)
+                pygame.display.update(self.sprites[self.sprite_indexes['main_character']]['sprite'])
                 jump_target.jumpMove(self.foregrounds)
 
             if jump_target.__class__.__name__ == 'WeaponsGun':
@@ -293,10 +293,10 @@ class StagesPlay:
         self.sprites[self.sprite_indexes['main_character']]['sprite'].weapons.clear(pygame.display.get_surface(), self.sprites[self.sprite_indexes['background']]['sprite'].image)
 
         # 敵の移動
-        self.characters.update(image_loader, status, setting, self.foregrounds, {'main_character_rect': self.sprites[self.sprite_indexes['main_character']]['sprite'].rect})
+        self.characters.update(image_loader, status, setting, self.foregrounds, {'main_character': self.sprites[self.sprite_indexes['main_character']]['sprite']})
         for sprite in self.sprites:
             if sprite['key'] == 'floating_block_moving':
-                sprite['sprite'].update(image_loader, status, setting, self.foregrounds, {'main_character_rect': self.sprites[self.sprite_indexes['main_character']]['sprite'].rect})
+                sprite['sprite'].update(image_loader, status, setting, self.foregrounds, {'main_character': self.sprites[self.sprite_indexes['main_character']]['sprite']})
 
         self.sprites[self.sprite_indexes['main_character']]['sprite'].comboAction(image_loader, status, setting)
 

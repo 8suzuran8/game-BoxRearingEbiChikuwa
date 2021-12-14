@@ -19,8 +19,17 @@ class ItemsFloatingBlockMoving(Physical):
 
             animation_type_index += 1
 
-        self.x_distance += 3
+        self.x_distance += 1
         self.need_fall = False
+
+        return
+
+    def update(self, image_loader, status, setting, foregrounds, info):
+        Physical.update(self, image_loader, status, setting, foregrounds, info)
+
+        if info['main_character'].rect.bottom >= self.rect.top and info['main_character'].rect.bottom - 5 <= self.rect.top and info['main_character'].rect.left < self.rect.right and info['main_character'].rect.right > self.rect.left:
+            info['main_character'].x_distance = self.x_distance
+            info['main_character'].move(image_loader, status, setting, foregrounds, {'animation': False})
 
         return
 

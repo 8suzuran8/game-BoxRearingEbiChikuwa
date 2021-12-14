@@ -17,8 +17,7 @@ class StagesPlaysNumber0102(StagesPlay):
         # 中中が[11, 7]
         # 右下が[22, 13]
 
-        # self.main_character_initial_position = self.getMovingXyByPosition(image_loader, status, setting, 5, 13)
-        self.main_character_initial_position = self.getMovingXyByPosition(image_loader, status, setting, 1, 9)
+        self.main_character_initial_position = self.getMovingXyByPosition(image_loader, status, setting, 5, 13)
         self.npc_position = self.getMovingXyByPosition(image_loader, status, setting, 22, 5)
         self.time_travel_zone_position = self.getMovingXyByPosition(image_loader, status, setting, 0, 13)
 

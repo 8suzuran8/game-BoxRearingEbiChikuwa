@@ -194,11 +194,15 @@ class Physical(pygame.sprite.Sprite):
         pass
 
     # 横移動のみ
-    def move(self, image_loader, status, setting, foregrounds):
+    def move(self, image_loader, status, setting, foregrounds, info = {}):
         if self.y_distance == 0 and self.x_distance == 0:
             return
 
-        self.animation_interval_index[0] += 1
+        if 'animation' not in info.keys():
+            info['animation'] = True
+
+        if info['animation'] == True:
+            self.animation_interval_index[0] += 1
 
         self.moveStep()
 
@@ -231,9 +235,10 @@ class Physical(pygame.sprite.Sprite):
             if found_ground == False:
                 self.fall = True
 
-        if self.animation_interval_index[0] >= self.animation_interval_max[0]:
-            self.animation(self.x_distance)
-            self.animation_interval_index[0] = 0
+        if info['animation'] == True:
+            if self.animation_interval_index[0] >= self.animation_interval_max[0]:
+                self.animation(self.x_distance)
+                self.animation_interval_index[0] = 0
 
         self.rect.x += self.x_distance
         if self.fall != True:

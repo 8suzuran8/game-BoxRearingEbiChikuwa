@@ -43,16 +43,16 @@ class CharacterBee(Physical):
 
     def update(self, image_loader, status, setting, foregrounds, info):
         # 追跡処理
-        if self.rect.x > info['main_character_rect'].x + 10:
+        if self.rect.x > info['main_character'].rect.x + 10:
             self.x_distance = -2
-        elif self.rect.x < info['main_character_rect'].x - 10:
+        elif self.rect.x < info['main_character'].rect.x - 10:
             self.x_distance = +2
         else:
             self.x_distance = 0
 
-        if self.rect.y > info['main_character_rect'].y + 10:
+        if self.rect.y > info['main_character'].rect.y + 10:
             self.y_distance = -1
-        elif self.rect.y < info['main_character_rect'].y - 10:
+        elif self.rect.y < info['main_character'].rect.y - 10:
             self.y_distance = +1
 
         for foreground in foregrounds:
