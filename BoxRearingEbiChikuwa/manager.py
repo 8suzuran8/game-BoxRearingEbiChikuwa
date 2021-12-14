@@ -4,7 +4,7 @@ from modules.stages.factory import StageFactory
 from modules.common.image_loader import ImageLoader
 
 class Manager:
-    status = {'score': 0, 'stage': '0101'}
+    status = {'score': 0, 'stage': '0102'}
     setting = {'language': 'en', 'speed': 0, 'difficult': 0, 'window': {}, 'font': None}
     image_loader = False
 

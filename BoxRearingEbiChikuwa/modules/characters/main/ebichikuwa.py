@@ -115,6 +115,11 @@ class CharacterEbichikuwa(Physical):
 
         return
 
+    def clear(self, background_image):
+        Physical.clear(self, background_image)
+        self.x_distance = 0
+        return
+
     def update(self, image_loader, status, setting, foregrounds, info):
         pass
 

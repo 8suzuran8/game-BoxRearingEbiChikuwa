@@ -60,13 +60,23 @@ class StagesPlay:
 
         # 浮遊ブロック
         for floating_block_info in self.floating_block_infos:
-            self.sprites.append({
-                'sprite': self.item_factory.create(image_loader, status, setting, 'items_floating_block', floating_block_info),
-                'key': 'floating_block',
-            })
-            floating_block_index = len(self.sprites) - 1
+            if floating_block_info[2] == 'moving':
+                self.sprites.append({
+                    'sprite': self.item_factory.create(image_loader, status, setting, 'items_floating_block_moving', floating_block_info),
+                    'key': 'floating_block_moving',
+                })
+                self.sprite_indexes['floating_block_moving'] = len(self.sprites) - 1
+                floating_block_index = len(self.sprites) - 1
+                self.animations.add(self.sprites[self.sprite_indexes['floating_block_moving']]['sprite'])
+            else:
+                self.sprites.append({
+                    'sprite': self.item_factory.create(image_loader, status, setting, 'items_floating_block', floating_block_info),
+                    'key': 'floating_block',
+                })
+                floating_block_index = len(self.sprites) - 1
+                self.sprites[self.sprite_indexes['background']]['sprite'].image.blit(image_loader.get('items/floating_box_' + floating_block_info[2] + '.svg'), [self.sprites[floating_block_index]['sprite'].rect.x, self.sprites[floating_block_index]['sprite'].rect.y - 10])
+
             self.foregrounds.add(self.sprites[floating_block_index]['sprite'])
-            self.sprites[self.sprite_indexes['background']]['sprite'].image.blit(image_loader.get('items/floating_box_' + floating_block_info[2] + '.svg'), [self.sprites[floating_block_index]['sprite'].rect.x, self.sprites[floating_block_index]['sprite'].rect.y - 10])
 
         # 蜂の巣
         x = setting['window']['full_width'] / 2 - 50
@@ -284,6 +294,9 @@ class StagesPlay:
 
         # 敵の移動
         self.characters.update(image_loader, status, setting, self.foregrounds, {'main_character_rect': self.sprites[self.sprite_indexes['main_character']]['sprite'].rect})
+        for sprite in self.sprites:
+            if sprite['key'] == 'floating_block_moving':
+                sprite['sprite'].update(image_loader, status, setting, self.foregrounds, {'main_character_rect': self.sprites[self.sprite_indexes['main_character']]['sprite'].rect})
 
         self.sprites[self.sprite_indexes['main_character']]['sprite'].comboAction(image_loader, status, setting)
 
@@ -376,11 +389,11 @@ class StagesPlay:
 
                     if event.key == pygame.K_LEFT:
                         if self.sprites[self.sprite_indexes['main_character']]['sprite'].animation_index[1] == 0:
-                            self.sprites[self.sprite_indexes['main_character']]['sprite'].x_distance = -2
+                            self.sprites[self.sprite_indexes['main_character']]['sprite'].x_distance -= 2
                             self.sprites[self.sprite_indexes['main_character']]['sprite'].move(image_loader, status, setting, self.foregrounds)
                     elif event.key == pygame.K_RIGHT:
                         if self.sprites[self.sprite_indexes['main_character']]['sprite'].animation_index[1] == 0:
-                            self.sprites[self.sprite_indexes['main_character']]['sprite'].x_distance = 2
+                            self.sprites[self.sprite_indexes['main_character']]['sprite'].x_distance += 2
                             self.sprites[self.sprite_indexes['main_character']]['sprite'].move(image_loader, status, setting, self.foregrounds)
                     elif event.key == pygame.K_SPACE:
                         # ジャンプ溜め

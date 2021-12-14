@@ -41,6 +41,7 @@ class ImageLoader(Singleton):
         self.images['items/floating_box_left.svg'] = pygame.image.load(self.base_path + 'items/floating_box_left.svg')
         self.images['items/floating_box_center.svg'] = pygame.image.load(self.base_path + 'items/floating_box_center.svg')
         self.images['items/floating_box_right.svg'] = pygame.image.load(self.base_path + 'items/floating_box_right.svg')
+        self.images['items/floating_box_moving.svg'] = pygame.image.load(self.base_path + 'items/floating_box_moving.svg')
 
         self.images['items/smoke.svg'] = pygame.image.load(self.base_path + 'items/smoke.svg')
 

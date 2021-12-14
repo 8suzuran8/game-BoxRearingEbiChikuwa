@@ -17,7 +17,8 @@ class StagesPlaysNumber0102(StagesPlay):
         # 中中が[11, 7]
         # 右下が[22, 13]
 
-        self.main_character_initial_position = self.getMovingXyByPosition(image_loader, status, setting, 5, 13)
+        # self.main_character_initial_position = self.getMovingXyByPosition(image_loader, status, setting, 5, 13)
+        self.main_character_initial_position = self.getMovingXyByPosition(image_loader, status, setting, 1, 9)
         self.npc_position = self.getMovingXyByPosition(image_loader, status, setting, 22, 5)
         self.time_travel_zone_position = self.getMovingXyByPosition(image_loader, status, setting, 0, 13)
 
@@ -31,7 +32,10 @@ class StagesPlaysNumber0102(StagesPlay):
 
         self.floating_block_infos.append(self.getMovingXyByPosition(image_loader, status, setting, 2, 7, 'single'))
         self.floating_block_infos.append(self.getMovingXyByPosition(image_loader, status, setting, 3, 6, 'left'))
-        for i in range(4, 22):
+        self.floating_block_infos.append(self.getMovingXyByPosition(image_loader, status, setting, 4, 6, 'right'))
+        self.floating_block_infos.append(self.getMovingXyByPosition(image_loader, status, setting, 5, 6, 'moving'))
+        self.floating_block_infos.append(self.getMovingXyByPosition(image_loader, status, setting, 15, 6, 'left'))
+        for i in range(16, 22):
             self.floating_block_infos.append(self.getMovingXyByPosition(image_loader, status, setting, i, 6, 'center'))
         self.floating_block_infos.append(self.getMovingXyByPosition(image_loader, status, setting, i + 1, 6, 'right'))
 

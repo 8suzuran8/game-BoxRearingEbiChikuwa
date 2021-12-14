@@ -10,6 +10,7 @@ from modules.items.bee_house import ItemsBeeHouse
 from modules.items.time_travel_zone import ItemsTimeTravelZone
 from modules.items.transparent_block import ItemsTransparentBlock # 地面
 from modules.items.floating_block import ItemsFloatingBlock # 浮くブロック
+from modules.items.floating_block_moving import ItemsFloatingBlockMoving # 動く浮くブロック
 
 class ItemFactory(Singleton):
     def create(self, image_loader, status, setting, kind, info):
