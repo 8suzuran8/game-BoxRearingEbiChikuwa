@@ -164,6 +164,11 @@ class Physical(pygame.sprite.Sprite):
         else:
             self.image = self.frames[kind][self.animation_index[kind]]
 
+        if self.dead == 1:
+            self.image.set_alpha(64)
+        elif self.dead == 0:
+            self.image.set_alpha(255)
+
         return True
 
     def hookHitWall(self, kind):
