@@ -49,12 +49,16 @@ class StagesPlaysNumber0102(StagesPlay):
             self.getMovingXyByPosition(image_loader, status, setting, 10, 5, self.character_factory._KIND_TAI),
             self.getMovingXyByPosition(image_loader, status, setting, 13, 5, self.character_factory._KIND_TAI),
             self.getMovingXyByPosition(image_loader, status, setting, 16, 5, self.character_factory._KIND_TAI),
+            self.getMovingXyByPosition(image_loader, status, setting, 5, 5, self.character_factory._KIND_AMMONITE),
         ]
 
-        def enemyOriginalInit(this): this.rect.y -= 25;return
+        def enemyOriginalInit1(this): this.rect.y -= 25; return
+        def enemyOriginalInit2(this): this.rect.y -= 25; this.y_distance = 0; this.x_distance = 1; return
 
         for i in range(4, 10):
-            self.enemy_infos[i].append(enemyOriginalInit)
+            self.enemy_infos[i].append(enemyOriginalInit1)
+
+        self.enemy_infos[10].append(enemyOriginalInit2)
 
         return
 

@@ -59,8 +59,8 @@ class StagesPlaysNumber0101(StagesPlay):
             self.getMovingXyByPosition(image_loader, status, setting, 5, 10, self.character_factory._KIND_AMMONITE),
         ]
 
-        def enemyOriginalInit1(this): this.y_distance = +3;return
-        def enemyOriginalInit2(this): this.y_distance = -3;return
+        def enemyOriginalInit1(this): this.y_distance = +3; return
+        def enemyOriginalInit2(this): this.y_distance = -3; return
 
         self.enemy_infos[3].append(enemyOriginalInit1)
         self.enemy_infos[4].append(enemyOriginalInit2)
