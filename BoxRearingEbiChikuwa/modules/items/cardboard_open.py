@@ -1,14 +1,32 @@
 import pygame
+from modules.physical import Physical
 
-class ItemsCardboardOpen(pygame.sprite.Sprite):
+class ItemsCardboardOpen(Physical):
+    def __new__(cls, image_loader, status, setting, info):
+        self = super().__new__(cls, image_loader, status, setting, info)
+
+        return self
+
+    def initializeVariable(self, image_loader, status, setting, info):
+        Physical.initializeVariable(self, image_loader, status, setting, info)
+
+        animation_type_index = 0
+        for animation_type_info in self.animation_type_infos:
+            self.frames.append(list())
+            frame_index = len(self.frames) - 1
+            for i in range(self.animation_file_max[animation_type_index]):
+                self.frames[frame_index].append(pygame.Surface((setting['window']['full_width'], setting['window']['full_height'])).convert())
+
+            animation_type_index += 1
+
+        self.need_fall = False
+
+        return
+
     def __init__(self, image_loader, status, setting, info):
-        pygame.sprite.Sprite.__init__(self)
+        Physical.__init__(self, image_loader, status, setting, info)
 
-        self.image = pygame.Surface((setting['window']['full_width'], setting['window']['full_height'])).convert()
         self.image.fill((185, 234, 255))
-        self.rect = self.image.get_rect()
-        self.rect.center = (setting['window']['full_width'] / 2, setting['window']['full_height'] / 2)
-
         self.drawGround(status, setting)
 
         for i in range(3):
@@ -22,6 +40,8 @@ class ItemsCardboardOpen(pygame.sprite.Sprite):
             if i % 2 == 1:
                 y += setting['window']['block_size']
             self.image.blit(image_loader.get('items/cloud01.svg'), [x, y])
+
+        return
 
     def drawGround(self, status, setting):
         # 奥上下
@@ -229,3 +249,4 @@ class ItemsCardboardOpen(pygame.sprite.Sprite):
             3
         )
 
+        return

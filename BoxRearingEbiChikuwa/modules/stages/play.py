@@ -240,6 +240,9 @@ class StagesPlay:
     def chkDie(self, image_loader, status, setting):
         # 死亡条件チェック
         for character in self.characters.sprites() + [self.sprites[self.sprite_indexes['main_character']]['sprite']]:
+            if character.dead > 0:
+                continue
+
             # 敵の破壊
             killed = False
             for weapon in self.sprites[self.sprite_indexes['main_character']]['sprite'].weapons:
@@ -252,8 +255,7 @@ class StagesPlay:
                     else:
                         if character.unbeatable == False:
                             status['score'] += 10
-                            character.kill()
-                            del(character)
+                            character.setDead()
                             weapon_kill = True
                         else:
                             weapon.x_distance *= -1
@@ -318,6 +320,10 @@ class StagesPlay:
             self.stopwatch_timer -= 1
             self.stopwatch.changeTime(image_loader, status, setting, self.stopwatch_timer)
             pygame.display.update(self.stopwatch.rect)
+
+            for sprite in self.sprites:
+                if sprite['key'] not in ['stage', 'score'] and sprite['sprite'].dead > 0:
+                    sprite['sprite'].countDownDead()
 
         if self.stopwatch_timer % 10 == 0:
             x = setting['window']['full_width'] / 2 - 50

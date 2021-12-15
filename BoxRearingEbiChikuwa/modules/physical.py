@@ -44,6 +44,20 @@ class Physical(pygame.sprite.Sprite):
         self.crush = False
         self.unbeatable = False
 
+        # 0は生存、死ぬと5をセットし、タイマーがカウントされる度に1減る
+        self.dead = 0
+
+        return
+
+    def setDead(self):
+        self.dead = 5
+
+        return
+
+    def countDownDead(self):
+        if self.dead > 0:
+            self.dead -= 1
+
         return
 
     def __init__(self, image_loader, status, setting, info):
@@ -85,6 +99,7 @@ class Physical(pygame.sprite.Sprite):
         del(self.fall)
         del(self.crush)
         del(self.unbeatable)
+        del(self.dead)
 
         return
 
@@ -101,6 +116,11 @@ class Physical(pygame.sprite.Sprite):
         return None
 
     def animation(self, step, kind = 0):
+        if self.dead > 1:
+            # カウント1の猶予がある
+            self.image = pygame.Surface((50, 50)).convert_alpha()
+            return True
+
         if self.animation_max[kind] == 1 and self.animation_file_max[kind] == 1:
             return True
 

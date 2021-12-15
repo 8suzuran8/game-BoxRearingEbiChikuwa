@@ -1,17 +1,35 @@
 import pygame
+from modules.physical import Physical
 
-class ItemsCardboardClose(pygame.sprite.Sprite):
+class ItemsCardboardClose(Physical):
+    def __new__(cls, image_loader, status, setting, info):
+        self = super().__new__(cls, image_loader, status, setting, info)
+
+        return self
+
+    def initializeVariable(self, image_loader, status, setting, info):
+        Physical.initializeVariable(self, image_loader, status, setting, info)
+
+        animation_type_index = 0
+        for animation_type_info in self.animation_type_infos:
+            self.frames.append(list())
+            frame_index = len(self.frames) - 1
+            for i in range(self.animation_file_max[animation_type_index]):
+                self.frames[frame_index].append(pygame.Surface((setting['window']['full_width'], setting['window']['full_height'])).convert())
+
+            animation_type_index += 1
+
+        self.need_fall = False
+
+        return
+
     def __init__(self, image_loader, status, setting, info):
-        pygame.sprite.Sprite.__init__(self)
+        Physical.__init__(self, image_loader, status, setting, info)
 
-        self.image = pygame.Surface((setting['window']['full_width'], setting['window']['full_height'])).convert()
         self.image.fill((185, 234, 255))
-        self.rect = self.image.get_rect()
-        self.rect.center = (setting['window']['full_width'] / 2, setting['window']['full_height'] / 2)
-
         self.drawGround(status, setting)
 
-        pygame.display.get_surface().blit(self.image, self.rect)
+        return
 
     def drawGround(self, status, setting):
         # 上
@@ -52,3 +70,5 @@ class ItemsCardboardClose(pygame.sprite.Sprite):
             ],
             0
         )
+
+        return

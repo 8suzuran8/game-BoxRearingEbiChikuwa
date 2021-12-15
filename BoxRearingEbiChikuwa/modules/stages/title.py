@@ -60,6 +60,8 @@ class StagesTitle():
     def __init__(self, image_loader, status, setting):
         self.initializeVariable(image_loader, status, setting)
         self.createSprites(image_loader, status, setting)
+
+        pygame.display.get_surface().blit(self.sprites[self.sprite_indexes['background']]['sprite'].image, self.sprites[self.sprite_indexes['background']]['sprite'].rect)
         self.drawTitle(image_loader, status, setting)
 
         pygame.key.set_repeat(500)
