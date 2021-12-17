@@ -67,11 +67,6 @@ class StagesPlaysNumber0101(StagesPlay):
 
         return
 
-    def __init__(self, image_loader, status, setting):
-        super().__init__(image_loader, status, setting)
-
-        return
-
     def __del__(self):
         super().__del__()
 

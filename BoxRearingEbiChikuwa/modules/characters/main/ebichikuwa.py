@@ -1,17 +1,17 @@
 import numpy as np
 import pyaudio
 import pygame
-from modules.physical import Physical
+from modules.character import Character
 from modules.weapons.factory import WeaponsFactory
 
-class CharacterEbichikuwa(Physical):
+class CharacterEbichikuwa(Character):
     def __new__(cls, image_loader, status, setting, info):
         self = super().__new__(cls, image_loader, status, setting, info)
 
         return self
 
     def initializeVariable(self, image_loader, status, setting, info):
-        Physical.initializeVariable(self, image_loader, status, setting, info)
+        Character.initializeVariable(self, image_loader, status, setting, info)
 
         self.junp_sound = False
         self.time_travel_key_index = 0
@@ -95,14 +95,15 @@ class CharacterEbichikuwa(Physical):
         return
 
     def __init__(self, image_loader, status, setting, info):
-        Physical.__init__(self, image_loader, status, setting, info)
+        Character.__init__(self, image_loader, status, setting, info)
 
         self.jump_sound = self.makeJumpSound()
+        self.rect.y += 25
 
         return
 
     def __del__(self):
-        Physical.__del__(self)
+        Character.__del__(self)
 
         del(self.junp_sound)
         del(self.time_travel_key_index)
@@ -116,7 +117,7 @@ class CharacterEbichikuwa(Physical):
         return
 
     def clear(self, background_image):
-        Physical.clear(self, background_image)
+        Character.clear(self, background_image)
         self.x_distance = 0
         return
 
@@ -141,7 +142,7 @@ class CharacterEbichikuwa(Physical):
 
         temp_y_distance = self.animation_index[1] * -15
 
-        Physical.jumpStart(self, image_loader, status, setting, key)
+        Character.jumpStart(self, image_loader, status, setting, key)
 
         # 飛べ
         self.y_distance = temp_y_distance

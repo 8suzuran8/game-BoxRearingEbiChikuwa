@@ -1,14 +1,14 @@
 import pygame
-from modules.physical import Physical
+from modules.character import Character
 
-class CharacterNiihamaTaikodai(Physical):
+class CharacterNiihamaTaikodai(Character):
     def __new__(cls, image_loader, status, setting, info):
         self = super().__new__(cls, image_loader, status, setting, info)
 
         return self
 
     def initializeVariable(self, image_loader, status, setting, info):
-        Physical.initializeVariable(self, image_loader, status, setting, info)
+        Character.initializeVariable(self, image_loader, status, setting, info)
 
         self.animation_type_infos = [
             ['stand', 'stand'],
@@ -28,9 +28,10 @@ class CharacterNiihamaTaikodai(Physical):
         return
 
     def __init__(self, image_loader, status, setting, info):
-        Physical.__init__(self, image_loader, status, setting, info)
+        Character.__init__(self, image_loader, status, setting, info)
 
         self.draw()
+        self.rect.y += 25
 
         return
 

@@ -1,7 +1,7 @@
 import pygame
-from modules.physical import Physical
+from modules.character import Character
 
-class CharacterBee(Physical):
+class CharacterBee(Character):
     _KIND_FAT = 1
     _KIND_SMALL = 2
 
@@ -11,7 +11,7 @@ class CharacterBee(Physical):
         return self
 
     def initializeVariable(self, image_loader, status, setting, info):
-        Physical.initializeVariable(self, image_loader, status, setting, info)
+        Character.initializeVariable(self, image_loader, status, setting, info)
 
         self.animation_type_infos = [['fly', 'fly']]
         self.animation_file_max = [4]

@@ -1,15 +1,15 @@
 import math
 import pygame
-from modules.physical import Physical
+from modules.character import Character
 
-class CharacterSakuradama(Physical):
+class CharacterSakuradama(Character):
     def __new__(cls, image_loader, status, setting, info):
         self = super().__new__(cls, image_loader, status, setting, info)
 
         return self
 
     def initializeVariable(self, image_loader, status, setting, info):
-        Physical.initializeVariable(self, image_loader, status, setting, info)
+        Character.initializeVariable(self, image_loader, status, setting, info)
 
         self.animation_type_infos = [
             ['stand', 'stand'],
@@ -30,8 +30,15 @@ class CharacterSakuradama(Physical):
 
         return
 
+    def __init__(self, image_loader, status, setting, info):
+        Character.__init__(self, image_loader, status, setting, info)
+
+        self.rect.y += 25
+
+        return
+
     def __del__(self):
-        Physical.__del__(self)
+        Character.__del__(self)
 
         del(self.clear)
 
