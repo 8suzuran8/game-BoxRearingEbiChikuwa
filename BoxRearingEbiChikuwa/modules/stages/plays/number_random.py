@@ -19,13 +19,58 @@ class StagesPlaysNumberRandom(StagesPlay):
         # 右下が[22, 13]
 
         self.floating_block_infos = list()
+        cell_count_in_block = (5, 3)
         for beside in range(4):
             for vertical in range(4):
-                x = random.randint(0, 5)
-                y = random.randint(0, 3)
+                # 1点目は5x3のどこか？
+                x = random.randint(-3, 5)
+                y = random.randint(-1, 3)
+
+                x = 3
+                y = 3
+
+                if x < 0 or y < 0:
+                    continue
+
+                floating_block_x = beside * cell_count_in_block[0] + x
+                floating_block_y = vertical * cell_count_in_block[1] + y
+
+                # 何個連続させるか？
                 x_stick = random.randint(-5, 5)
                 y_stick = random.randint(-3, 3)
-                self.floating_block_infos.append(self.getMovingXyByPosition(image_loader, status, setting, 0, 10, 'left'))
+
+                if x_stick == 0:
+                    self.floating_block_infos.append(self.getMovingXyByPosition(image_loader, status, setting, floating_block_x, floating_block_y, 'single'))
+                else:
+                    if x_stick < 0:
+                        self.floating_block_infos.append(self.getMovingXyByPosition(image_loader, status, setting, floating_block_x, floating_block_y, 'right'))
+                        if x_stick + x < 0:
+                            x_stick = x * (-1)
+                        for i in range(1, abs(x_stick)):
+                            self.floating_block_infos.append(self.getMovingXyByPosition(image_loader, status, setting, floating_block_x - i, floating_block_y, 'center'))
+                        self.floating_block_infos.append(self.getMovingXyByPosition(image_loader, status, setting, floating_block_x + x_stick, floating_block_y, 'left'))
+                    else:
+                        self.floating_block_infos.append(self.getMovingXyByPosition(image_loader, status, setting, floating_block_x, floating_block_y, 'left'))
+                        if x_stick + x > cell_count_in_block[0]:
+                            x_stick = cell_count_in_block[0] - x
+                        for i in range(1, x_stick):
+                            self.floating_block_infos.append(self.getMovingXyByPosition(image_loader, status, setting, floating_block_x + i, floating_block_y, 'center'))
+                        self.floating_block_infos.append(self.getMovingXyByPosition(image_loader, status, setting, floating_block_x + x_stick, floating_block_y, 'right'))
+
+                if y_stick != 0:
+                    if x_stick < 0:
+                        if y_stick + y < 0:
+                            y_stick = y * (-1)
+                        for i in range(1, abs(y_stick) + 1):
+                            self.floating_block_infos.append(self.getMovingXyByPosition(image_loader, status, setting, floating_block_x, floating_block_y - i, 'center'))
+                    else:
+                        if y_stick + y > cell_count_in_block[1]:
+                            y_stick = cell_count_in_block[1] - y
+                        for i in range(1, y_stick + 1):
+                            self.floating_block_infos.append(self.getMovingXyByPosition(image_loader, status, setting, floating_block_x, floating_block_y + i, 'center'))
+
+        # 下から描画しないとブロックの上部分が不恰好なので並び替える
+        self.floating_block_infos = sorted(self.floating_block_infos, reverse=True, key=lambda x: x[1]) 
 
         self.main_character_initial_position = self.getMovingXyByPosition(image_loader, status, setting, 5, 13)
         self.npc_position = self.getMovingXyByPosition(image_loader, status, setting, 22, 5)

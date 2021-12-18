@@ -42,11 +42,11 @@ class StagesPlay:
         self.sprite_indexes['background'] = len(self.sprites) - 1
 
         # 霧 @TODO
-        # for i in range(int(setting['window']['moving_height'] / 50)): # y
-        #     for j in range(int(setting['window']['moving_width'] / 50)): # x
-        #         x = j * 50 + setting['window']['margin_left']
-        #         y = i * 50 + setting['window']['margin_top']
-        #         self.sprites[self.sprite_indexes['background']]['sprite'].image.blit(image_loader.get('items/smoke.svg'), [x, y])
+        for i in range(int(setting['window']['moving_height'] / 50)): # y
+            for j in range(int(setting['window']['moving_width'] / 50)): # x
+                x = j * 50 + setting['window']['margin_left']
+                y = i * 50 + setting['window']['margin_top']
+                self.sprites[self.sprite_indexes['background']]['sprite'].image.blit(image_loader.get('items/smoke.svg'), [x, y])
 
         # 時間枠
         x = setting['window']['margin_left'] + setting['window']['moving_width'] / 2 - 28
