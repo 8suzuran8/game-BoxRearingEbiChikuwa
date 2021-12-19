@@ -20,7 +20,6 @@ class Manager:
         self.image_loader.setting(self.setting['language'])
 
         window_size = pygame.display.get_surface().get_size()
-        self.setting['font'] = pygame.font.SysFont('sans-serif', 30, False)
 
         self.setting['window']['block_size'] = 50
         self.setting['window']['full_width'] = window_size[0]

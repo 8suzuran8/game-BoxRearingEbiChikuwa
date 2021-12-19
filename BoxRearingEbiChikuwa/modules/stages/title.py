@@ -112,7 +112,13 @@ class StagesTitle():
 
             self.sprite_group.clear(pygame.display.get_surface(), self.background_image)
             self.sprite_group.draw(pygame.display.get_surface())
+
             pygame.display.update()
+
+            if setting['font'] == None:
+                setting['font'] = pygame.font.SysFont('sans-serif', 30, False)
+                self.sprites[self.sprite_indexes['loading']]['sprite'].kill()
+                del(self.sprites[self.sprite_indexes['loading']]['sprite'])
 
         return
 

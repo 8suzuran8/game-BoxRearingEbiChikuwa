@@ -200,7 +200,7 @@ class Physical(pygame.sprite.Sprite):
         self.rect.y += self.y_distance / 4
 
         for foreground in foregrounds:
-            if (self.fall == True or (self.__class__.__name__ == 'CharacterEbichikuwa' and self.combo_jump == True)) and self.rect.right > foreground.rect.left and self.rect.left < foreground.rect.right:
+            if (self.fall == True or (self.__class__.__name__ == 'CharacterEbichikuwa' and self.combo_jump == True)) and self.rect.right > foreground.rect.left + 10 and self.rect.left < foreground.rect.right - 10:
                 # 着地
                 if self.y_distance >= 0 and self.rect.top < foreground.rect.top and self.rect.bottom > foreground.rect.top:
                     found_ground = True
@@ -235,7 +235,7 @@ class Physical(pygame.sprite.Sprite):
         called_hook_hit_wall = False
         for foreground in foregrounds:
             # 横へ移動中に衝突
-            if self.rect.top < foreground.rect.bottom and self.rect.bottom > foreground.rect.top:
+            if self.rect.top < foreground.rect.bottom - 10 and self.rect.bottom > foreground.rect.top + 10:
                 if self.x_distance > 0:
                     if self.rect.right + 1 >= foreground.rect.left and self.rect.right + 1 <= foreground.rect.right:
                         self.hookHitWall(type(foreground).__name__)

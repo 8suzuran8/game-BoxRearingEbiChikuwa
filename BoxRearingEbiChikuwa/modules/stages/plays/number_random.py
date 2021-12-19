@@ -12,7 +12,8 @@ class StagesPlaysNumberRandom(StagesPlay):
     def initializeVariable(self, image_loader, status, setting):
         StagesPlay.initializeVariable(self, image_loader, status, setting)
 
-        self.next_stage = -3
+        current_stage_numbers = int(status['stage'][:2]), int(status['stage'][2:])
+        self.next_stage = str(current_stage_numbers[0]).zfill(2) + str(current_stage_numbers[1] + 1).zfill(2)
 
         # 左上が[0, 0]
         # 中中が[11, 7]
@@ -72,31 +73,47 @@ class StagesPlaysNumberRandom(StagesPlay):
         # 下から描画しないとブロックの上部分が不恰好なので並び替える
         self.floating_block_infos = sorted(self.floating_block_infos, reverse=True, key=lambda x: x[1]) 
 
+        # 上に何も乗っていないブロックをまとめる
+        nothing_on_floating_blocks = list()
+        for floating_block_info1 in self.floating_block_infos:
+            something_on_floating_block = False
+            for floating_block_info2 in self.floating_block_infos:
+                if floating_block_info1 == floating_block_info2:
+                    continue
+
+                if floating_block_info1[1] == setting['window']['margin_top']:
+                    continue
+
+                if floating_block_info1[0] == floating_block_info2[0] and floating_block_info1[1] - setting['window']['block_size'] == floating_block_info2[1]:
+                    something_on_floating_block = True
+                    break
+
+            if something_on_floating_block == True:
+                continue
+
+            nothing_on_floating_blocks.append(floating_block_info1)
+
+
+        # 主要アイテムの配置
         self.main_character_initial_position = self.getMovingXyByPosition(image_loader, status, setting, 5, 13)
-        self.npc_position = self.getMovingXyByPosition(image_loader, status, setting, 22, 5)
-        self.time_travel_zone_position = self.getMovingXyByPosition(image_loader, status, setting, 0, 13)
+        position = nothing_on_floating_blocks.pop(random.randint(0, len(nothing_on_floating_blocks) - 1))
+        self.time_travel_zone_position = [position[0], position[1] - setting['window']['block_size']]
+        position = nothing_on_floating_blocks.pop(random.randint(0, len(nothing_on_floating_blocks) - 1))
+        self.npc_position = [position[0], position[1] - setting['window']['block_size']]
 
+        # 敵の配置
         self.enemy_infos = [
-            self.getMovingXyByPosition(image_loader, status, setting, 11, 12, self.character_factory._KIND_NIIHAMA_TAIKODAI),
-            self.getMovingXyByPosition(image_loader, status, setting, 19, 13, self.character_factory._KIND_TAKO),
-            self.getMovingXyByPosition(image_loader, status, setting, 20, 13, self.character_factory._KIND_TAKO),
             self.getMovingXyByPosition(image_loader, status, setting, 21, 13, self.character_factory._KIND_TAKO),
-            self.getMovingXyByPosition(image_loader, status, setting, 2, 9, self.character_factory._KIND_TAI),
-            self.getMovingXyByPosition(image_loader, status, setting, 3, 9, self.character_factory._KIND_TAI),
-            self.getMovingXyByPosition(image_loader, status, setting, 4, 9, self.character_factory._KIND_TAI),
-            self.getMovingXyByPosition(image_loader, status, setting, 10, 5, self.character_factory._KIND_TAI),
-            self.getMovingXyByPosition(image_loader, status, setting, 13, 5, self.character_factory._KIND_TAI),
-            self.getMovingXyByPosition(image_loader, status, setting, 16, 5, self.character_factory._KIND_TAI),
-            self.getMovingXyByPosition(image_loader, status, setting, 5, 5, self.character_factory._KIND_AMMONITE),
+        #     self.getMovingXyByPosition(image_loader, status, setting, 20, 13, self.character_factory._KIND_TAKO),
+        #     self.getMovingXyByPosition(image_loader, status, setting, 21, 13, self.character_factory._KIND_TAKO),
+        #     self.getMovingXyByPosition(image_loader, status, setting, 2, 9, self.character_factory._KIND_TAI),
+        #     self.getMovingXyByPosition(image_loader, status, setting, 3, 9, self.character_factory._KIND_TAI),
+        #     self.getMovingXyByPosition(image_loader, status, setting, 4, 9, self.character_factory._KIND_TAI),
+        #     self.getMovingXyByPosition(image_loader, status, setting, 10, 5, self.character_factory._KIND_TAI),
+        #     self.getMovingXyByPosition(image_loader, status, setting, 13, 5, self.character_factory._KIND_TAI),
+        #     self.getMovingXyByPosition(image_loader, status, setting, 16, 5, self.character_factory._KIND_TAI),
+        #     self.getMovingXyByPosition(image_loader, status, setting, 5, 5, self.character_factory._KIND_AMMONITE),
         ]
-
-        def enemyOriginalInit1(this): this.rect.y -= 25; return
-        def enemyOriginalInit2(this): this.rect.y -= 25; this.y_distance = 0; this.x_distance = 1; return
-
-        for i in range(4, 10):
-            self.enemy_infos[i].append(enemyOriginalInit1)
-
-        self.enemy_infos[10].append(enemyOriginalInit2)
 
         return
 
@@ -111,4 +128,3 @@ class StagesPlaysNumberRandom(StagesPlay):
         del(self.enemy_infos)
 
         return
-    

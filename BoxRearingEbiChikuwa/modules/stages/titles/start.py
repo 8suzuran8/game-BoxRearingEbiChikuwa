@@ -26,6 +26,19 @@ class CursorSprite(pygame.sprite.Sprite):
 
         return
 
+class LoadingSprite(pygame.sprite.Sprite):
+    def __init__(self, image_loader, status, setting):
+        pygame.sprite.Sprite.__init__(self)
+
+        self.image = image_loader.get('stages/titles/loading.svg')
+        self.rect = self.image.get_rect()
+
+        self.rect.center = (self.rect.width / 2, self.rect.height / 2)
+        self.rect.x = setting['window']['full_width'] / 2 - (self.rect.width / 2)
+        self.rect.y = setting['window']['full_height'] / 2 + 10
+
+        return
+
 class StagesTitlesStart(StagesTitlesCursor):
     def drawCopyright(self, image_loader, status, setting):
         copyright_image = image_loader.get('stages/titles/start_copyright.svg')
@@ -54,6 +67,13 @@ class StagesTitlesStart(StagesTitlesCursor):
         self.sprite_indexes['cursor'] = len(self.sprites) - 1
         self.cursor = self.sprites[self.sprite_indexes['cursor']]['sprite']
         self.sprite_group.add(self.sprites[self.sprite_indexes['cursor']]['sprite'])
+
+        self.sprites.append({
+            'sprite': LoadingSprite(image_loader, status, setting),
+            'key': 'loading',
+        })
+        self.sprite_indexes['loading'] = len(self.sprites) - 1
+        self.sprite_group.add(self.sprites[self.sprite_indexes['loading']]['sprite'])
 
         return
 

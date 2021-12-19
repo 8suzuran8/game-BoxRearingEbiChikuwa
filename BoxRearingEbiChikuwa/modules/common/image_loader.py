@@ -15,6 +15,7 @@ class ImageLoader(Singleton):
         self.images['stages/titles/start_copyright.svg'] = pygame.image.load(self.base_path + 'stages/titles/start_copyright_' + language + '.svg').convert_alpha()
         self.images['stages/titles/start_menu.svg'] = pygame.image.load(self.base_path + 'stages/titles/start_menu_' + language + '.svg').convert_alpha()
         self.images['stages/titles/start_cursor.svg'] = pygame.image.load(self.base_path + 'stages/titles/start_cursor.svg').convert_alpha()
+        self.images['stages/titles/loading.svg'] = pygame.image.load(self.base_path + 'stages/titles/loading.svg').convert_alpha()
 
         self.images['stages/titles/option_menu.svg'] = pygame.image.load(self.base_path + 'stages/titles/option_menu_' + language + '.svg').convert_alpha()
         self.images['stages/titles/option_manual.svg'] = pygame.image.load(self.base_path + 'stages/titles/option_manual_' + language + '.svg').convert_alpha()
