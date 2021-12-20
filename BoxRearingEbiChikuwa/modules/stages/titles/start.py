@@ -68,12 +68,13 @@ class StagesTitlesStart(StagesTitlesCursor):
         self.cursor = self.sprites[self.sprite_indexes['cursor']]['sprite']
         self.sprite_group.add(self.sprites[self.sprite_indexes['cursor']]['sprite'])
 
-        self.sprites.append({
-            'sprite': LoadingSprite(image_loader, status, setting),
-            'key': 'loading',
-        })
-        self.sprite_indexes['loading'] = len(self.sprites) - 1
-        self.sprite_group.add(self.sprites[self.sprite_indexes['loading']]['sprite'])
+        if setting['font'] == None:
+            self.sprites.append({
+                'sprite': LoadingSprite(image_loader, status, setting),
+                'key': 'loading',
+            })
+            self.sprite_indexes['loading'] = len(self.sprites) - 1
+            self.sprite_group.add(self.sprites[self.sprite_indexes['loading']]['sprite'])
 
         return
 

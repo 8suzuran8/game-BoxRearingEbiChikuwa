@@ -1,14 +1,14 @@
 import pygame
-from modules.character import Character
+from modules.physical import Physical
 
-class CharacterTai(Character):
+class CharacterTai(Physical):
     def __new__(cls, image_loader, status, setting, info):
         self = super().__new__(cls, image_loader, status, setting, info)
 
         return self
 
     def initializeVariable(self, image_loader, status, setting, info):
-        Character.initializeVariable(self, image_loader, status, setting, info)
+        Physical.initializeVariable(self, image_loader, status, setting, info)
 
         self.animation_type_infos = [
             ['swim', 'swim'],

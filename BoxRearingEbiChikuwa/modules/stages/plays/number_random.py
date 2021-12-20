@@ -102,18 +102,22 @@ class StagesPlaysNumberRandom(StagesPlay):
         self.npc_position = [position[0], position[1] - setting['window']['block_size']]
 
         # 敵の配置
-        self.enemy_infos = [
-            self.getMovingXyByPosition(image_loader, status, setting, 21, 13, self.character_factory._KIND_TAKO),
-        #     self.getMovingXyByPosition(image_loader, status, setting, 20, 13, self.character_factory._KIND_TAKO),
-        #     self.getMovingXyByPosition(image_loader, status, setting, 21, 13, self.character_factory._KIND_TAKO),
-        #     self.getMovingXyByPosition(image_loader, status, setting, 2, 9, self.character_factory._KIND_TAI),
-        #     self.getMovingXyByPosition(image_loader, status, setting, 3, 9, self.character_factory._KIND_TAI),
-        #     self.getMovingXyByPosition(image_loader, status, setting, 4, 9, self.character_factory._KIND_TAI),
-        #     self.getMovingXyByPosition(image_loader, status, setting, 10, 5, self.character_factory._KIND_TAI),
-        #     self.getMovingXyByPosition(image_loader, status, setting, 13, 5, self.character_factory._KIND_TAI),
-        #     self.getMovingXyByPosition(image_loader, status, setting, 16, 5, self.character_factory._KIND_TAI),
-        #     self.getMovingXyByPosition(image_loader, status, setting, 5, 5, self.character_factory._KIND_AMMONITE),
-        ]
+        self.enemy_infos = list()
+
+        self.enemy_infos.append(self.getMovingXyByPosition(image_loader, status, setting, 21, 13, self.character_factory._KIND_TAKO))
+
+        for i in range(3):
+            position = nothing_on_floating_blocks.pop(random.randint(0, len(nothing_on_floating_blocks) - 1))
+            self.enemy_infos.append([position[0], position[1] - setting['window']['block_size'], self.character_factory._KIND_TAI])
+
+        for i in range(3):
+            position = nothing_on_floating_blocks.pop(random.randint(0, len(nothing_on_floating_blocks) - 1))
+            self.enemy_infos.append([position[0], position[1] - setting['window']['block_size'], self.character_factory._KIND_AMMONITE])
+
+        def enemyOriginalInit1(this): this.rect.y += 0; this.y_distance = 0; this.x_distance = 1; return
+        self.enemy_infos[4].append(enemyOriginalInit1)
+        self.enemy_infos[5].append(enemyOriginalInit1)
+        self.enemy_infos[6].append(enemyOriginalInit1)
 
         return
 
